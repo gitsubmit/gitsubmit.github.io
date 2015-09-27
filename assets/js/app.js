@@ -52,6 +52,10 @@ app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope
     route: 'About',  // this corresponds to the menu item that should be active
     title: 'About | GitSubmit'
   }
+
+  $(document).ready(function() {
+    $('.parallax').parallax()
+  })
 }])
 
 app.controller('404Ctrl', ['$scope', '$rootScope', function($scope, $rootScope) {
