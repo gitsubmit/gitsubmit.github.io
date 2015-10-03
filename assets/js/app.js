@@ -9,6 +9,14 @@ app.config(['$routeProvider', function($routeProvider) {
     templateUrl: 'about.html',
     controller: 'AboutCtrl'
   })
+  .when('/login', {
+    templateUrl: 'login.html',
+    controller: 'LoginCtrl'
+  })
+  .when('/signup', {
+    templateUrl: 'signup.html',
+    controller: 'SignupCtrl'
+  })
   .when('/404', {
     templateUrl: '404.html',
     controller: '404Ctrl'
@@ -56,6 +64,31 @@ app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope
   $(document).ready(function() {
     $('.parallax').parallax()
   })
+}])
+
+app.controller('LoginCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+  $rootScope.root = {
+    route: 'Login',  // this corresponds to the menu item that should be active
+    title: 'Login | GitSubmit'
+  }
+  app.controller('FormLoginCtrl', ['$scope', function($scope) {
+      $scope.submit = function() {
+        //TODO:Add code to handle the fields and send to approriate destination
+      };
+    }]);
+}])
+
+app.controller('SignupCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+  $rootScope.root = {
+    route: 'Sign Up',  // this corresponds to the menu item that should be active
+    title: 'Sign Up | GitSubmit'
+  }
+
+    app.controller('FormSignupCtrl', ['$scope', function($scope) {
+      $scope.submit = function() {
+        //TODO:Add code to handle the fields and send to approriate destination
+      };
+    }]);
 }])
 
 app.controller('404Ctrl', ['$scope', '$rootScope', function($scope, $rootScope) {
