@@ -37,6 +37,20 @@ app.run(function($rootScope, $location) {
     // Plugin initialization for elements in index.html, such as <nav>
     // Plugin initialization for views should be in their corresponding controllers.
     $('.button-collapse').sideNav({'edge': 'left'})
+
+
+    // github last updated
+    if ($('#lastUpdated').length) { // Check if placeholder exists
+      $.ajax({
+        url: "https://api.github.com/repos/gitsubmit/gitsubmit.github.io/commits/master",
+        dataType: "json",
+        success: function (data) {
+          var sha = data.sha;
+          var date = jQuery.timeago(data.commit.author.date);
+          $('#lastUpdated').html(date);
+        }
+      });
+    }
   })
 })
 
