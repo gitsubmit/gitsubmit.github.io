@@ -102,3 +102,15 @@ app.controller('404Ctrl', ['$scope', '$rootScope', function($scope, $rootScope) 
     title: '404 | GitSubmit'
   }
 }])
+
+app.controller('ClassCtrl', ['$scope', '$rootScope', '$routeParams', function($scope, $rootScope, $routeParams) {
+  var class_name = $routeParams.class_name
+
+  // Make an API to backend here
+
+  $rootScope.root = {
+    title: 'Class ' + class_name + ' | GitSubmit'
+  }
+
+  $scope.class_name = class_name
+}])
