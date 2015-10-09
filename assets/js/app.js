@@ -2,16 +2,41 @@ var app = angular.module('main', ['ngRoute'])
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
-    templateUrl: 'home.html',
+    templateUrl: 'views/home.html',
     controller: 'HomeCtrl'
   })
   .when('/about', {
-    templateUrl: 'about.html',
+    templateUrl: 'views/about.html',
     controller: 'AboutCtrl'
   })
   .when('/404', {
-    templateUrl: '404.html',
+    templateUrl: 'views/404.html',
     controller: '404Ctrl'
+  })
+  .when('/settings', {
+    templateUrl: 'views/settings.html',
+  })
+  .when('/settings/ssh_keys', {
+    templateUrl: 'views/settings_ssh_keys.html',
+  })
+  .when('/classes/create', {
+    templateUrl: 'views/class_create.html',
+  })
+  .when('/classes/:class_name', {
+    templateUrl: 'views/class.html',
+    controller: 'ClassCtrl'
+  })
+  .when('/classes/:class_name/projects/create', {
+    templateUrl: 'views/project_create.html',
+  })
+  .when('/classes/:class_name/projects/:project_name', {
+    templateUrl: 'views/project.html',
+  })
+  .when('/classes/:class_name/projects/:project_name/source/:commit/:file_path*', {
+    templateUrl: 'views/source_file.html',
+  })
+  .when('/:user_name/submissions/:submission_name', {
+    templateUrl: 'views/submission.html',
   })
   .otherwise({
     redirectTo: '/404'
