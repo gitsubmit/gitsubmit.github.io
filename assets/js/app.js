@@ -21,6 +21,7 @@ app.config(['$routeProvider', function($routeProvider) {
   })
   .when('/classes/create', {
     templateUrl: 'views/class_create.html',
+    controller: 'ClassCreateCtrl'
   })
   .when('/classes/:class_name', {
     templateUrl: 'views/class.html',
@@ -114,3 +115,25 @@ app.controller('ClassCtrl', ['$scope', '$rootScope', '$routeParams', function($s
 
   $scope.class_name = class_name
 }])
+
+app.controller('ClassCreateCtrl', function($scope, $rootScope) {
+  $rootScope.root = {
+    title: 'Create a New Class'
+  }
+
+  $scope.formSubmit = function() {
+    alert($scope.class_name + ' ' + $scope.class_id)
+
+    // TODO
+    var url = '';
+    $http.post(url, {
+      class_name: $scope.class_name,
+      url_name: $scope.class_id,
+      description: $scope.class_description,
+    }).then(function(response) {
+      // success
+    }, function(response) {
+      // error
+    })
+  }
+})

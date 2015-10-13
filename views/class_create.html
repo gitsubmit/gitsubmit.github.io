@@ -1,1 +1,27 @@
-Class create
+<div class="container">
+  <div class="spacer200"></div>
+  <h2 class="light">Create a new class</h2>
+  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12 m6 l5 offset-l1">
+          <input type="text" id="class_name" ng-model="class_name">
+          <label for="class_name">Class Name</label>
+        </div>
+        <div class="input-field col s12 m6 l5">
+          <input type="text" id="class_id" ng-model="class_id">
+          <label for="class_id">Class Id</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m10 l9 offset-l1">
+          <input type="text" id="class_description" ng-model="class_description">
+          <label for="class_id">Description</label>
+        </div>
+        <div class="col s12 center-on-small-only m2 l1">
+          <a class="waves-effect waves-light btn green lighten-1 white-text" ng-click="formSubmit()">Create</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
