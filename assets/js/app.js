@@ -116,7 +116,7 @@ app.controller('ClassCtrl', ['$scope', '$rootScope', '$routeParams', function($s
   $scope.class_name = class_name
 }])
 
-app.controller('ClassCreateCtrl', function($scope, $rootScope) {
+app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
   $rootScope.root = {
     title: 'Create a New Class'
   }
@@ -124,6 +124,7 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope) {
   $scope.formSubmit = function() {
     alert($scope.class_name + ' ' + $scope.class_id)
 
+    $('input[type="submit"]').removeClass('green').addClass('disabled')
     // TODO
     var url = '';
     $http.post(url, {
@@ -132,8 +133,11 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope) {
       description: $scope.class_description,
     }).then(function(response) {
       // success
+      // redirect to /classes/ view
     }, function(response) {
       // error
+      // show error
+      $('input[type="submit"]').removeClass('disabled').addClass('red')
     })
   }
 })
