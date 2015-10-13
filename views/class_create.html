@@ -19,7 +19,15 @@
           <label class="active" for="class_id">Description</label>
         </div>
         <div class="col s12 center-on-small-only m2 l1">
-          <input type="submit" value="Create" class="waves-effect waves-light btn green lighten-1 white-text" ng-click="formSubmit()">
+          <input
+            type="submit"
+            value="Create"
+            class="waves-effect waves-light btn lighten-1 white-text"
+            ng-click="formSubmit(class_create_form.class_name.$valid && class_create_form.class_id.$valid)"
+            ng-class="{'disabled': class_create_form.class_name.$invalid || class_create_form.class_id.$invalid,
+              'green': formStatus === 0 && class_create_form.class_name.$valid && class_create_form.class_id.$valid,
+              'red': formStatus !== 0}"
+          >
         </div>
       </div>
     </form>

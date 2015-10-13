@@ -121,7 +121,13 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
     title: 'Create a New Class'
   }
 
-  $scope.formSubmit = function() {
+  // formStatus = 0: not submitted
+  // formStatus != 0: submitted but failed
+  $scope.formStatus = 0
+
+  $scope.formSubmit = function(isValid) {
+    if (!isValid) return
+
     alert($scope.class_name + ' ' + $scope.class_id)
 
     $('input[type="submit"]').removeClass('green').addClass('disabled')
@@ -133,11 +139,12 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
       description: $scope.class_description,
     }).then(function(response) {
       // success
-      // redirect to /classes/ view
+      // TODO: redirect to /classes/ view
     }, function(response) {
       // error
-      // show error
+      // TODO: notify user of error
       $('input[type="submit"]').removeClass('disabled').addClass('red')
+      $scope.formStatus = 1
     })
   }
 })
