@@ -2,14 +2,14 @@
   <div class="spacer200"></div>
   <h2 class="light">Create a new class</h2>
   <div class="row">
-    <form class="col s12">
+    <form class="col s12" name="class_create_form">
       <div class="row">
         <div class="input-field col s12 m6 l5 offset-l1">
-          <input type="text" id="class_name" ng-model="class_name" placeholder="Senior Design">
+          <input type="text" id="class_name" ng-model="class_name" name="class_name" placeholder="Senior Design" ng-required="true" ng-class="{invalid: class_create_form.class_name.$invalid-required && class_create_form.class_name.$touched}">
           <label class="active" for="class_name">Class Name</label>
         </div>
         <div class="input-field col s12 m6 l5">
-          <input type="text" id="class_id" ng-model="class_id" placeholder="cs4485f15">
+          <input type="text" id="class_id" ng-model="class_id" name="class_id" placeholder="cs4485f15" ng-required="true" ng-class="{invalid: class_create_form.class_id.$invalid-required && class_create_form.class_id.$touched}">
           <label class="active" for="class_id">Class Id</label>
         </div>
       </div>
