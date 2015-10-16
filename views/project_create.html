@@ -79,9 +79,9 @@
             value="Create"
             class="waves-effect waves-light btn lighten-1 white-text"
             ng-click="formSubmit(project_create_form.project_name.$valid && project_create_form.project_id.$valid)"
-            ng-class="{'disabled': project_create_form.project_name.$invalid || project_create_form.project_id.$invalid,
-              'green': formStatus === 0 && project_create_form.project_name.$valid && project_create_form.project_id.$valid,
-              'red': formStatus !== 0}">
+            ng-class="{'disabled': formStatus === 'submitting' || project_create_form.project_name.$invalid || project_create_form.project_id.$invalid,
+              'green': formStatus === 'ready' && project_create_form.project_name.$valid && project_create_form.project_id.$valid,
+              'red': formStatus === 'failure'}">
         </div>
       </div>
     </form>
