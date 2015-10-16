@@ -152,16 +152,14 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
     title: 'Create a New Class'
   }
 
-  // formStatus = 0: not submitted
-  // formStatus != 0: submitted but failed
-  $scope.formStatus = 0
+  // formStatus: 'ready', 'submitting', 'failure'
+  $scope.formStatus = 'ready'
 
   $scope.formSubmit = function(isValid) {
     if (!isValid) return
 
-    alert($scope.class_name + ' ' + $scope.class_id)
+    $scope.formStatus = 'submitting'
 
-    $('input[type="submit"]').removeClass('green').addClass('disabled')
     // TODO
     var url = '';
     $http.post(url, {
@@ -171,11 +169,11 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
     }).then(function(response) {
       // success
       // TODO: redirect to /classes/ view
+      $scope.formStatus = 'ready'
     }, function(response) {
       // error
       // TODO: notify user of error
-      $('input[type="submit"]').removeClass('disabled').addClass('red')
-      $scope.formStatus = 1
+      $scope.formStatus = 'failure'
     })
   }
 })
@@ -227,7 +225,7 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
     $http.post(url, data).then(function(response) {
       // success
       // TODO: redirect to /classes/<class>/projects/<project>
-      $scope.formStatus = 'success'
+      $scope.formStatus = 'ready'
     }, function(response) {
       // error
       // TODO: notify user of error
