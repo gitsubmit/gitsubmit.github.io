@@ -1,4 +1,9 @@
-var app = angular.module('main', ['ngRoute'])
+var app = angular.module('main', ['ngRoute', 'ngStorage'])
+
+app.constant('Consts', {
+  API_RESPONSE_CACHE_EXPIRATION: 5 * 60 * 1000 * 1000,  // 5 mins
+  GITHUB_API_REPO: 'https://api.github.com/repos/gitsubmit/gitsubmit.github.io/commits/master',
+})
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
@@ -43,7 +48,27 @@ app.config(['$routeProvider', function($routeProvider) {
   })
 }])
 
-app.run(function($rootScope, $location) {
+app.factory('cachedGet', function($http, $localStorage, Consts) {
+  return function(url, cacheKey, callbackSuccess, callbackFailure) {
+    if (!$localStorage[cacheKey + '_data'] ||
+        !$localStorage[cacheKey + '_timestamp'] ||
+        ((new Date().getTime() - $localStorage[cacheKey + '_timestamp']) >= Consts.API_RESPONSE_CACHE_EXPIRATION)) {
+      $http.get(url).then(function(response) {
+        $localStorage[cacheKey + '_data'] = response
+        $localStorage[cacheKey + '_timestamp'] = new Date().getTime()
+        callbackSuccess(response)
+        console.log('success')
+      }, function(response) {
+        callbackFailure(response)
+        console.log('failure')
+      })
+    } else {
+      callbackSuccess($localStorage[cacheKey + '_data'])
+    }
+  }
+})
+
+app.run(function($rootScope, $location, Consts, cachedGet) {
   // index.html JavaScript setup code
   $(document).ready(function() {
     // Detect touch screen and enable scrollbar if necessary
@@ -66,15 +91,13 @@ app.run(function($rootScope, $location) {
 
     // github last updated
     if ($('#lastUpdated').length) { // Check if placeholder exists
-      $.ajax({
-        url: "https://api.github.com/repos/gitsubmit/gitsubmit.github.io/commits/master",
-        dataType: "json",
-        success: function (data) {
-          var sha = data.sha;
-          var date = jQuery.timeago(data.commit.author.date);
-          $('#lastUpdated').html(date);
-        }
-      });
+      cachedGet(Consts.GITHUB_API_REPO, 'github_api_repo', function(response) {
+        var data = response.data
+        var date = jQuery.timeago(data.commit.author.date);
+        $('#lastUpdated').html(date);
+      }, function(response) {
+        $('#lastUpdated').html('Failed to update')
+      })
     }
   })
 })
