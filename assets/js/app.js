@@ -34,6 +34,7 @@ app.config(['$routeProvider', function($routeProvider) {
   })
   .when('/classes/:class_name/projects/create', {
     templateUrl: 'views/project_create.html',
+    controller: 'ProjectCreateCtrl'
   })
   .when('/classes/:class_name/projects/:project_name', {
     templateUrl: 'views/project.html',
@@ -177,4 +178,25 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
       $scope.formStatus = 1
     })
   }
+})
+
+app.controller('ProjectCreateCtrl', function($scope, $rootScope) {
+  $rootScope.root = {
+    title: 'Create a Project'
+  }
+
+  $scope.formStatus = 0
+
+  $scope.formSubmit = function(isValid) {
+    if (!isValid) return
+  }
+
+  $(document).ready(function() {
+    $('.datepicker').pickadate({
+      selectMonths: true,
+      selectYears: 4,
+      min: 1        // minimum is 1 day
+    })
+    $('select').material_select()
+  })
 })
