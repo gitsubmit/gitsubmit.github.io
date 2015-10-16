@@ -84,6 +84,11 @@ app.controller('HomeCtrl', ['$scope', '$rootScope', function($scope, $rootScope)
     route: 'Home',  // this corresponds to the menu item that should be active
     title: 'Home | GitSubmit'
   }
+
+  $(document).ready(function() {
+    // close navbar if open
+    $('#sidenav-overlay').trigger('click');
+  })
 }])
 
 app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
@@ -93,6 +98,8 @@ app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope
   }
 
   $(document).ready(function() {
+    // close navbar if open
+    $('#sidenav-overlay').trigger('click');
     $('.parallax').parallax()
   })
 }])
