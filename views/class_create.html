@@ -1,1 +1,50 @@
-Class create
+<div class="container">
+  <div class="spacer200"></div>
+  <h2 class="light">Create a new class</h2>
+  <div class="row">
+    <form class="col s12" name="class_create_form">
+      <div class="row">
+        <div class="input-field col s12 m6 l5 offset-l1">
+          <input
+            type="text"
+            id="class_name"
+            ng-model="class_name"
+            name="class_name"
+            placeholder="Senior Design"
+            ng-required="true"
+            ng-class="{invalid: class_create_form.class_name.$invalid && class_create_form.class_name.$touched}">
+          <label class="active" for="class_name">Class Name</label>
+        </div>
+        <div class="input-field col s12 m6 l5">
+          <input
+            type="text"
+            id="class_id"
+            ng-model="class_id"
+            name="class_id"
+            placeholder="cs4485f15"
+            ng-required="true"
+            ng-class="{invalid: class_create_form.class_id.$invalid && class_create_form.class_id.$touched}"
+            ng-pattern="/^[a-zA-Z0-9_-]+$/"
+            ng-trim="false">
+          <label class="active" for="class_id">Class Id</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m10 l9 offset-l1">
+          <input type="text" id="class_description" ng-model="class_description" placeholder="UT Dallas Senior Design Class Fall 2015">
+          <label class="active" for="class_id">Description</label>
+        </div>
+        <div class="col s12 center-on-small-only m2 l1">
+          <input
+            type="submit"
+            value="Create"
+            class="waves-effect waves-light btn lighten-1 white-text"
+            ng-click="formSubmit(class_create_form.class_name.$valid && class_create_form.class_id.$valid)"
+            ng-class="{'disabled': class_create_form.class_name.$invalid || class_create_form.class_id.$invalid,
+              'green': formStatus === 0 && class_create_form.class_name.$valid && class_create_form.class_id.$valid,
+              'red': formStatus !== 0}">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
