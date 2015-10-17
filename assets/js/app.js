@@ -20,6 +20,7 @@ app.config(['$routeProvider', function($routeProvider) {
   })
   .when('/settings', {
     templateUrl: 'views/settings.html',
+    controller: 'SettingsCtrl'
   })
   .when('/settings/ssh_keys', {
     templateUrl: 'views/settings_ssh_keys.html',
@@ -177,4 +178,14 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
       $scope.formStatus = 1
     })
   }
+})
+
+app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
+  $rootScope.root = {
+    title: 'Account Settings'
+  }
+
+  $(document).ready(function() {
+    $('ul.tabs').tabs()
+  })
 })
