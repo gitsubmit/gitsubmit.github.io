@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="spacer100"></div>
+    <h1>Login!</h1>
+    <form class="col s24" name="login">
+      <div class="row">
+        <div class="input-field col s24 m6 l6">
+          <input
+            type="text"
+            id="username"
+            ng-model="username"
+            name="username"
+            placeholder="Username"
+            ng-required="true">
+          <label class="active" for="username">Username</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s24 m6 16">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="password"
+            ng-model="password"
+            ng-required="true">
+          <label class="active" for="password">Password</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col center s12 m12 l12">
+          <input
+            type="submit"
+            value="Submit"
+            class="waves-effect waves-light btn lighten-1 white-text"
+            ng-click="submit()">
+        </div>
+      </div>
+    </form>
+</div>

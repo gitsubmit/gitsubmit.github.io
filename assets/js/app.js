@@ -14,6 +14,15 @@ app.config(['$routeProvider', function($routeProvider) {
     templateUrl: 'views/about.html',
     controller: 'AboutCtrl'
   })
+  .when('/login', {
+    templateUrl: 'login.html',
+    controller: 'LoginCtrl'
+    //controller: 'FormLoginCtrl'
+  })
+  .when('/signup', {
+    templateUrl: 'signup.html',
+    controller: 'SignupCtrl'
+  })
   .when('/404', {
     templateUrl: 'views/404.html',
     controller: '404Ctrl'
@@ -126,6 +135,29 @@ app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope
     $('#sidenav-overlay').trigger('click');
     $('.parallax').parallax()
   })
+}])
+
+app.controller('LoginCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+  $rootScope.root = {
+    route: 'Login',  // this corresponds to the menu item that should be active
+    title: 'Login | GitSubmit'
+  }
+
+  $scope.submit = function() {
+        //TODO:Add code to handle the fields and send to approriate destination
+        alert($scope.username + ' ' + $scope.password)
+      }
+}])
+
+app.controller('SignupCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+  $rootScope.root = {
+    route: 'Sign Up',  // this corresponds to the menu item that should be active
+    title: 'Sign Up | GitSubmit'
+  }
+
+  $scope.submit = function() {
+        alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
+      }
 }])
 
 app.controller('404Ctrl', ['$scope', '$rootScope', function($scope, $rootScope) {
