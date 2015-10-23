@@ -12,6 +12,7 @@ app.config(['$routeProvider', function($routeProvider) {
   .when('/login', {
     templateUrl: 'login.html',
     controller: 'LoginCtrl'
+    //controller: 'FormLoginCtrl'
   })
   .when('/signup', {
     templateUrl: 'signup.html',
@@ -71,11 +72,11 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', function($scope, $rootScope
     route: 'Login',  // this corresponds to the menu item that should be active
     title: 'Login | GitSubmit'
   }
-  app.controller('FormLoginCtrl', ['$scope', function($scope) {
-      $scope.submit = function() {
+
+  $scope.submit = function() {
         //TODO:Add code to handle the fields and send to approriate destination
-      };
-    }]);
+        alert($scope.username + ' ' + $scope.password)
+      }
 }])
 
 app.controller('SignupCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
@@ -84,11 +85,9 @@ app.controller('SignupCtrl', ['$scope', '$rootScope', function($scope, $rootScop
     title: 'Sign Up | GitSubmit'
   }
 
-    app.controller('FormSignupCtrl', ['$scope', function($scope) {
-      $scope.submit = function() {
-        //TODO:Add code to handle the fields and send to approriate destination
-      };
-    }]);
+  $scope.submit = function() {
+        alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
+      }
 }])
 
 app.controller('404Ctrl', ['$scope', '$rootScope', function($scope, $rootScope) {
