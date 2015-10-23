@@ -297,6 +297,11 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     }
   ]
 
+  $scope.deleteKey = function(index, key_name) {
+    alert('deleted ' + key_name)
+    $scope.keys.splice(index, 1)
+  }
+
   $scope.submitPassword = function(isValid) {
     if (!isValid) return
   }
