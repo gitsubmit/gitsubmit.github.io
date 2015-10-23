@@ -282,6 +282,21 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     title: 'Account Settings'
   }
 
+  $scope.keys = [
+    {
+      key_name: 'wut',
+      key_contents: '0xDEADBEEF'
+    },
+    {
+      key_name: 'qux',
+      key_contents: '0x1337C0DE'
+    },
+    {
+      key_name: 'A very loooooooooooooooooooooooooooooooooooong name',
+      key_contents: 'A very looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong key'
+    }
+  ]
+
   $(document).ready(function() {
     $('ul.tabs').tabs()
   })

@@ -18,8 +18,35 @@
       Personal Information
     </div>
     <div id="settings" class="col s12 m12 l12">
-      Account Settings
-    </div>
+      <h5>Change Your Password</h5>
+      <form action="" class="col s12" name="change_password_form">
+        <div class="row">
+          <div class="input-field col s12 m6 l5 offset-l1">
+            <input id="password" type="password" value="password">
+            <label for="password" class="active">Password</label>
+          </div>
+          <div class="input-field col s12 m6 l5">
+            <input id="password_confirm" type="password" value="password">
+            <label for="password_confirm" class="active">Confirm Password</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12 m12 l10">
+            <input type="submit" class="center-on-small-only right waves-effect waves-light btn blue lighten1 white-text">
+          </div>
+        </div>
+      </form>
+      <hr>
+      <h5>Manage Your SSH Keys</h5>
+      <div ng-repeat="key in keys">
+        <div class="row">
+          <div class="col truncate s11 m4 l3 offset-l1">{{key.key_name}}</div>
+          <div class="col truncate m7 l6 hide-on-small-only">{{key.key_contents}}</div>
+          <div class="col s1 m1 l1">
+            <i class="mdi-content-clear"></i>
+          </div>
+        </div>
+      </div>
     <div id="notifications" class="col s12 m12 l12">
       Notifications
     </div>
