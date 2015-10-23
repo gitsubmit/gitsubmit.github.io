@@ -303,6 +303,8 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
 
 
   $(document).ready(function() {
+    $('#sidenav-overlay').trigger('click');
     $('ul.tabs').tabs()
+    $('input[length]').characterCounter()
   })
 })
