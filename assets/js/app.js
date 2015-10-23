@@ -297,6 +297,11 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     }
   ]
 
+  $scope.submitPassword = function(isValid) {
+    if (!isValid) return
+  }
+
+
   $(document).ready(function() {
     $('ul.tabs').tabs()
   })
