@@ -8,6 +8,7 @@ body {
 main {
   flex: 1 0 auto;
 }
+
 /* End sticky footer */
 
 /* Spacers */
@@ -23,6 +24,10 @@ main {
 .spacer50 { height: 50px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
 .spacer100 { height: 100px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
 .spacer200 { height: 200px; width: 100%; font-size: 0; margin: 0; padding: 0; border: 0; display: block; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+}
 
 
 /* Height of header images */

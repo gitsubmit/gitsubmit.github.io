@@ -33,6 +33,8 @@
         <script src="materialize/js/animation.js"></script>
         <script src="materialize/js/sideNav.js"></script>
         <script src="materialize/js/tabs.js"></script>
+        <script src="materialize/js/date_picker/picker.date.js"></script>
+        <script src="materialize/js/date_picker/picker.js"></script>
 
 
         <script src="assets/js/app.js"></script>
@@ -50,8 +52,8 @@
                         <li ng-class="{active: root.route === 'About'}"><a href="#/about">About</a></li>
 
                         <!-- Logged Out -->
-                        <li ng-class="{active: root.route === 'Sign Up'}"><a href="">Sign Up</a></li>
-                        <li ng-class="{active: root.route === 'Login'}"><a href="">Login</a></li>
+                        <li ng-class="{active: root.route === 'Sign Up'}"><a href="#/signup">Sign Up</a></li>
+                        <li ng-class="{active: root.route === 'Login'}"><a href="#/login">Login</a></li>
 
                         <!-- Logged In -->
                         <li ng-class="{active: root.route === 'Notifications'}"><a href=""><i class="small mdi-social-notifications left"></i>Notifications</a></li>
@@ -62,8 +64,8 @@
                         <li ng-class="{active: root.route === 'About'}"><a href="#/about">About</a></li>
 
                         <!-- Logged Out -->
-                        <li ng-class="{active: root.route === 'Sign Up'}"><a href="">Sign Up</a></li>
-                        <li ng-class="{active: root.route === 'Login'}"><a href="">Login</a></li>
+                        <li ng-class="{active: root.route === 'Sign Up'}"><a href="#/signup">Sign Up</a></li>
+                        <li ng-class="{active: root.route === 'Login'}"><a href="#/login">Login</a></li>
 
                         <!-- Logged In -->
                         <li ng-class="{active: root.route === 'Notifications'}"><a href=""><i class="small mdi-social-notifications left"></i>Notifications</a></li>

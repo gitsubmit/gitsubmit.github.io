@@ -1,1 +1,89 @@
-Project create
+<div class="container">
+  <div class="spacer200"></div>
+  <h2 class="light">Create a New Project</h2>
+  <div class="row">
+    <form class="col s12" name="project_create_form">
+      <div class="row">
+        <div class="input-field col s12 m6 l6">
+          <input
+            type="text"
+            id="project_name"
+            ng-model="project_name"
+            name="project_name"
+            placeholder="GitSubmit"
+            ng-required="true"
+            ng-class="{invalid: project_create_form.project_name.$invalid && project_create_form.project_name.$touched}">
+          <label class="active" for="project_name">Project Name</label>
+        </div>
+        <div class="input-field col s12 m6 l6">
+          <input
+            type="text"
+            id="project_id"
+            name="project_id"
+            placeholder="gitsubmit"
+            ng-model="project_id"
+            ng-required="true"
+            ng-class="{invalid: project_create_form.project_id.$invalid && project_create_form.project_id.$touched}"
+            ng-pattern="/^[a-zA-Z0-9_-]+$/"
+            ng-trim="false">
+          <label class="active" for="project_id">Project Id</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12 l12">
+          <input type="text" id="project_description" ng-model="project_description" placeholder="GitSubmit FTW">
+          <label class="active" for="project_id">Description</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col center s12 m4 l4">
+          <input
+            type="checkbox"
+            id="project_team"
+            ng-model="project_team">
+          <label for="project_team">Team Based</label>
+        </div>
+        <div class="input-field col center s12 m4 l4">
+          <select
+            class="browser-default"
+            ng-model="project_members"
+            ng-disabled="!project_team"
+            ng-required="project_team">
+            <option value="" disabled selected>Max Members</option>
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        <div class="input-field col center s12 m4 l4">
+          <input
+            type="date"
+            id="project_date"
+            name="project_date"
+            ng-required="true"
+            ng-model="project_date"
+            class="datepicker">
+          <label for="project_date">Due Date</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col center s12 m12 l12">
+          <input
+            type="submit"
+            value="Create"
+            class="waves-effect waves-light btn lighten-1 white-text"
+            ng-click="formSubmit(project_create_form.project_name.$valid && project_create_form.project_id.$valid)"
+            ng-class="{'disabled': formStatus === 'submitting' || project_create_form.project_name.$invalid || project_create_form.project_id.$invalid,
+              'green': formStatus === 'ready' && project_create_form.project_name.$valid && project_create_form.project_id.$valid,
+              'red': formStatus === 'failure'}">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

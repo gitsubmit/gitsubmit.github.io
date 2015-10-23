@@ -14,6 +14,15 @@ app.config(['$routeProvider', function($routeProvider) {
     templateUrl: 'views/about.html',
     controller: 'AboutCtrl'
   })
+  .when('/login', {
+    templateUrl: 'login.html',
+    controller: 'LoginCtrl'
+    //controller: 'FormLoginCtrl'
+  })
+  .when('/signup', {
+    templateUrl: 'signup.html',
+    controller: 'SignupCtrl'
+  })
   .when('/404', {
     templateUrl: 'views/404.html',
     controller: '404Ctrl'
@@ -35,6 +44,7 @@ app.config(['$routeProvider', function($routeProvider) {
   })
   .when('/classes/:class_name/projects/create', {
     templateUrl: 'views/project_create.html',
+    controller: 'ProjectCreateCtrl'
   })
   .when('/classes/:class_name/projects/:project_name', {
     templateUrl: 'views/project.html',
@@ -129,6 +139,29 @@ app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope
   })
 }])
 
+app.controller('LoginCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+  $rootScope.root = {
+    route: 'Login',  // this corresponds to the menu item that should be active
+    title: 'Login | GitSubmit'
+  }
+
+  $scope.submit = function() {
+        //TODO:Add code to handle the fields and send to approriate destination
+        alert($scope.username + ' ' + $scope.password)
+      }
+}])
+
+app.controller('SignupCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+  $rootScope.root = {
+    route: 'Sign Up',  // this corresponds to the menu item that should be active
+    title: 'Sign Up | GitSubmit'
+  }
+
+  $scope.submit = function() {
+        alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
+      }
+}])
+
 app.controller('404Ctrl', ['$scope', '$rootScope', function($scope, $rootScope) {
   $rootScope.root = {
     title: '404 | GitSubmit'
@@ -152,16 +185,14 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
     title: 'Create a New Class'
   }
 
-  // formStatus = 0: not submitted
-  // formStatus != 0: submitted but failed
-  $scope.formStatus = 0
+  // formStatus: 'ready', 'submitting', 'failure'
+  $scope.formStatus = 'ready'
 
   $scope.formSubmit = function(isValid) {
     if (!isValid) return
 
-    alert($scope.class_name + ' ' + $scope.class_id)
+    $scope.formStatus = 'submitting'
 
-    $('input[type="submit"]').removeClass('green').addClass('disabled')
     // TODO
     var url = '';
     $http.post(url, {
@@ -171,13 +202,79 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
     }).then(function(response) {
       // success
       // TODO: redirect to /classes/ view
+      $scope.formStatus = 'ready'
     }, function(response) {
       // error
       // TODO: notify user of error
-      $('input[type="submit"]').removeClass('disabled').addClass('red')
-      $scope.formStatus = 1
+      $scope.formStatus = 'failure'
     })
   }
+})
+
+app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routeParams) {
+  var class_name = $routeParams.class_name
+
+  $rootScope.root = {
+    title: 'Create a Project'
+  }
+
+  $scope.formStatus = 'ready'
+
+  // how many times user clicked submit with invalid date
+  $scope.invalid_date_times = 0
+
+  $scope.formSubmit = function(isValid) {
+    if (!isValid) return
+
+    // Note that the date picker doesn't work like regular inputs
+    // so ng-required/model/$invalid don't work. We need to
+    // use custom js code to validate it here.
+    var date_input = $('#project_date')
+    if (date_input.val() === undefined || date_input.val() === '') {
+      date_input.addClass('invalid')
+      $scope.invalid_date_times += 1
+      if ($scope.invalid_date_times >= 3) {
+        // alert only if user tried to submit 3 times with invalid date
+        alert('Please pick a date!')
+      }
+      return
+    } else {
+      date_input.removeClass('invalid')
+    }
+
+    $scope.formStatus = 'submitting'
+
+    var data = {
+      project_name: $scope.project_name,
+      url_name: $scope.project_id,
+      description: $scope.project_description,
+      team_based: $scope.project_team || false, // default false if value is undefined
+      max_members: $scope.project_members || 1, // default 1 if value is undefined
+      due_date: $('#project_date').val()
+    }
+
+    var url = ''
+
+    $http.post(url, data).then(function(response) {
+      // success
+      // TODO: redirect to /classes/<class>/projects/<project>
+      $scope.formStatus = 'ready'
+    }, function(response) {
+      // error
+      // TODO: notify user of error
+      $scope.formStatus = 'failure'
+    })
+
+  }
+
+  $(document).ready(function() {
+    $('.datepicker').pickadate({
+      selectMonths: true,
+      selectYears: 4,
+      min: 1        // minimum is 1 day
+    })
+    $('select').material_select()
+  })
 })
 
 app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
