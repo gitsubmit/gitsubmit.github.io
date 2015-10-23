@@ -29,6 +29,7 @@ app.config(['$routeProvider', function($routeProvider) {
   })
   .when('/settings', {
     templateUrl: 'views/settings.html',
+    controller: 'SettingsCtrl'
   })
   .when('/settings/ssh_keys', {
     templateUrl: 'views/settings_ssh_keys.html',
@@ -273,5 +274,15 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
       min: 1        // minimum is 1 day
     })
     $('select').material_select()
+  })
+})
+
+app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
+  $rootScope.root = {
+    title: 'Account Settings'
+  }
+
+  $(document).ready(function() {
+    $('ul.tabs').tabs()
   })
 })

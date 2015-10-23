@@ -32,8 +32,10 @@
         <script src="materialize/js/jquery.timeago.min.js"></script>
         <script src="materialize/js/animation.js"></script>
         <script src="materialize/js/sideNav.js"></script>
+        <script src="materialize/js/tabs.js"></script>
         <script src="materialize/js/date_picker/picker.date.js"></script>
         <script src="materialize/js/date_picker/picker.js"></script>
+
 
         <script src="assets/js/app.js"></script>
 
@@ -55,7 +57,7 @@
 
                         <!-- Logged In -->
                         <li ng-class="{active: root.route === 'Notifications'}"><a href=""><i class="small mdi-social-notifications left"></i>Notifications</a></li>
-                        <li ng-class="{active: root.route === 'Account'}"><a href=""><i class="small mdi-action-account-circle left"></i>Account</a></li>
+                        <li ng-class="{active: root.route === 'Account'}"><a href="#/settings"><i class="small mdi-action-account-circle left"></i>Account</a></li>
                     </ul>
                     <ul class="side-nav" id="mobile-menu">
                         <li ng-class="{active: root.route === 'Home'}"><a href="#/">Home</a></li>
@@ -67,7 +69,7 @@
 
                         <!-- Logged In -->
                         <li ng-class="{active: root.route === 'Notifications'}"><a href=""><i class="small mdi-social-notifications left"></i>Notifications</a></li>
-                        <li ng-class="{active: root.route === 'Account'}"><a href=""><i class="small mdi-action-account-circle left"></i>Account</a></li>
+                        <li ng-class="{active: root.route === 'Account'}"><a href="#/settings"><i class="small mdi-action-account-circle left"></i>Account</a></li>
                     </ul>
                 </div>
             </nav>
