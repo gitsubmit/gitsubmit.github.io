@@ -311,5 +311,6 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     $('#sidenav-overlay').trigger('click');
     $('ul.tabs').tabs()
     $('input[length]').characterCounter()
+    $('.modal-trigger').leanModal()
   })
 })

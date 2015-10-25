@@ -57,7 +57,7 @@
           <div class="col s12 m12 l10">
             <input
               type="submit"
-              class="center-on-small-only right waves-effect waves-light btn disabled lighten1 white-text"
+              class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
               ng-class="{'disabled': password_form.password.$invalid || password_form.password_confirm.$invalid || password !== password_confirm,
                          'blue': password_form.password.$valid && password_form.password_confirm.$valid && password === password_confirm}"
               ng-click="submitPassword(password_form.password.$valid && password_form.password_confirm.$valid && password === password_confirm)"
@@ -77,6 +77,58 @@
               <i class="mdi-content-clear" ng-click="deleteKey($index, key.key_name)"></i>
             </a>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12 l10">
+          <a class="center-on-small-only right waves-effect waves-light blue btn lighten-1 white-text modal-trigger" href="#add_ssh_key">
+            Add SSH Key
+          </a>
+        </div>
+      </div>
+      <div id="add_ssh_key" class="modal">
+        <div class="modal-content">
+          <form action="" class="col s12" name="ssh_key_form">
+            <div class="row">
+              <div class="input-field">
+                <input
+                  type="text"
+                  id="ssh_key_name"
+                  name="ssh_key_name"
+                  value="ssh_key_name"
+                  ng-model="ssh_key_name"
+                  ng-class="{'invalid': ssh_key_form.ssh_key_name.$invalid && ssh_key_form.ssh_key_name.$touched}"
+                  ng-required="true"
+                  >
+                <label for="ssh_key_name" class="active">Name</label>
+              </div>
+              <div class="input-field">
+                <textarea
+                  id="ssh_key_content"
+                  class="materialize-textarea"
+                  name="ssh_key_content"
+                  ng-model="ssh_key_content"
+                  ng-class="{'invalid': ssh_key_form.ssh_key_content.$invalid && ssh_key_form.ssh_key_content.$touched}"
+                  ng-minlength="1"
+                  required="true"
+                  ng-required="true"
+                ></textarea>
+                <label for="ssh_key_content">Key</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m12 l10">
+                <input
+                  type="submit"
+                  value="Save"
+                  class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
+                  ng-class="{'disabled': ssh_key_form.ssh_key_name.$invalid || ssh_key_form.ssh_key_content.$invalid,
+                             'blue': ssh_key_form.ssh_key_name.$valid && ssh_key_form.ssh_key_content.$valid}"
+                  ng-click="submitKey(ssh_key_form.ssh_key_name.$valid && ssh_key_form.ssh_key_content.$valid)"
+                  >
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     <div id="notifications" class="col s12 m12 l12">
