@@ -36,7 +36,7 @@
               ng-required="true"
               length="8"
               >
-            <label for="password" class="active">Password</label>
+            <label for="password">Password</label>
           </div>
           <div class="input-field col s12 m6 l5">
             <input
@@ -50,17 +50,29 @@
               ng-required="true"
               length="8"
               >
-            <label for="password_confirm" class="active">Confirm Password</label>
+            <label for="password_confirm">Confirm Password</label>
           </div>
         </div>
         <div class="row">
-          <div class="col s12 m12 l10">
+          <div class="input-field col s12 m6 l5 offset-l1">
+            <input
+              type="password"
+              id="password_current"
+              name="password_current"
+              value="password"
+              ng-model="password_current"
+              ng-class="{'invalid': (password_form.password_current.$invalid && password_form.password_current.$touched)}"
+              ng-required="true"
+              >
+            <label for="password_current">Current Password</label>
+          </div>
+          <div class="col s12 m6 l5">
             <input
               type="submit"
               class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
-              ng-class="{'disabled': password_form.password.$invalid || password_form.password_confirm.$invalid || password !== password_confirm,
-                         'blue': password_form.password.$valid && password_form.password_confirm.$valid && password === password_confirm}"
-              ng-click="submitPassword(password_form.password.$valid && password_form.password_confirm.$valid && password === password_confirm)"
+              ng-class="{'disabled': password_form.password.$invalid || password_form.password_confirm.$invalid || password !== password_confirm || password_form.password_current.$invalid,
+                         'blue': password_form.password.$valid && password_form.password_confirm.$valid && password === password_confirm && password_form.password_current.$valid}"
+              ng-click="submitPassword(password_form.password.$valid && password_form.password_confirm.$valid && password === password_confirm && password_form.password_current.$valid)"
               >
           </div>
         </div>
