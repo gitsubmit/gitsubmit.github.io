@@ -289,17 +289,6 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
   $scope.username = 'previous username'
   $scope.email = 'previous email'
 
-  $scope.change_password = function() {
-        if($scope.password != $scope.password_confirm) {
-          $scope.match=true
-        }
-        else{
-          $scope.match=false
-        }
-
-        //TODO:hook up to changing password
-      }
-
   $scope.change_username = function(){
        alert($scope.username)
        // TODO:hook up to changing username
