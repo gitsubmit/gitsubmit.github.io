@@ -282,7 +282,48 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     title: 'Account Settings'
   }
 
+  $scope.keys = [
+    {
+      key_name: 'wut',
+      key_contents: '0xDEADBEEF'
+    },
+    {
+      key_name: 'qux',
+      key_contents: '0x1337C0DE'
+    },
+    {
+      key_name: 'A very loooooooooooooooooooooooooooooooooooong name',
+      key_contents: 'A very looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong key'
+    }
+  ]
+
+  $scope.deleteKey = function(index, key_name) {
+    alert('deleted ' + key_name)
+    $scope.keys.splice(index, 1)
+    // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
+  }
+
+  $scope.submitPassword = function(isValid) {
+    if (!isValid) return
+    var password = $scope.password
+    var password_current = $scope.password_current
+    alert('new: ' + password + ', current: ' + password_current)
+    // TODO: POST api:/<username>/update_password/<temp_password_key> {new_password: <str>}
+  }
+
+  $scope.submitKey = function(isValid) {
+    if (!isValid) return
+    var key_name = $scope.ssh_key_name
+    var key_content = $scope.ssh_key_content
+    alert('name: ' + key_name + ', content: ' + key_content)
+    // TODO: POST api:/<username>/ssh_keys/ {key_name: <str>, key_contents: <str>}
+  }
+
+
   $(document).ready(function() {
+    $('#sidenav-overlay').trigger('click');
     $('ul.tabs').tabs()
+    $('input[length]').characterCounter()
+    $('.modal-trigger').leanModal()
   })
 })
