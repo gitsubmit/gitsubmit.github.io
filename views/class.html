@@ -1,3 +1,47 @@
 <div class="container">
-  <h2>Class <span ng-bind="class_name"></span></h2>
+  <div class="row">
+    <h2>Class <span ng-bind="class_name"></span></h2>
+    <hr />
+    <p class="description"><span future-ng-bind="class_description">This is a dummy class!</span></p>
+    <p>Owner: <b><span future-ng-bind="class_owner">mrazo</span></b></p>
+  </div>
+  <div class="row">
+    <div class="col m8 s12">
+      <ul class="collection with-header">
+        <li class="collection-header collection-header-accent"><h3>Projects</h3></li>
+        <li class="collection-item"><a href="#/classes/some_class/projects/project_three">project_three</a><br>Due 10/31/2015</li>
+        <li class="collection-item"><a href="#/classes/some_class/projects/project_four">project_four</a><br>Due 12/5/2015</li>
+      </ul>
+      <ul class="collection with-header">
+        <li class="collection-header collection-header-accent"><h3>Projects (overdue)</h3></li>
+        <li class="collection-item"><a href="#/classes/some_class/projects/project_one">project_one</a><br><span>Due 8/31/2015</span></li>
+        <li class="collection-item"><a href="#/classes/some_class/projects/project_two">project_two</a><br><span>Due 9/8/2015</span></li>
+      </ul>
+    </div>
+    <div class="col m4 s12">
+      <ul class="collection with-header">
+        <li class="collection-header collection-header-accent">
+          <h5>Teachers</h5>
+        </li>
+        <li class="collection-item">
+          mrazo <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeProfessor($index, key.key_name)"></i></a>
+        </li>
+      </ul>
+
+      <ul class="collection with-header">
+        <li class="collection-header collection-header-accent">
+          <h5>Students</h5>
+        </li>
+        <li class="collection-item">
+          shawkins <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
+        </li>
+        <li class="collection-item">
+          jroe <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
+        </li>
+        <li class="collection-item">
+          jdoe <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

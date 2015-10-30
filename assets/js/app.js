@@ -48,6 +48,7 @@ app.config(['$routeProvider', function($routeProvider) {
   })
   .when('/classes/:class_name/projects/:project_name', {
     templateUrl: 'views/project.html',
+    controller: 'ProjectCtrl'
   })
   .when('/classes/:class_name/projects/:project_name/source/:commit/:file_path*', {
     templateUrl: 'views/source_file.html',
@@ -178,6 +179,20 @@ app.controller('ClassCtrl', ['$scope', '$rootScope', '$routeParams', function($s
   }
 
   $scope.class_name = class_name
+}])
+
+app.controller('ProjectCtrl', ['$scope', '$rootScope', '$routeParams', function($scope, $rootScope, $routeParams) {
+  var project_name = $routeParams.project_name
+  var class_name = $routeParams.class_name
+
+  // TODO: Make an API call to backend here
+
+  $rootScope.root = {
+    title: 'Project ' + project_name + ' | GitSubmit'
+  }
+
+  $scope.class_name = class_name
+  $scope.project_name = project_name
 }])
 
 app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {

@@ -34,3 +34,13 @@ h1, h2, h3, h4, h5, h6 {
 .parallax-container {
   height: 350px;
 }
+
+/* class and project pages */
+.description {
+  color: #777;
+  font-style: italic;
+}
+
+.collection.with-header .collection-header.collection-header-accent {
+  background-color: #eeeeee;
+}

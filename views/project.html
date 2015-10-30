@@ -1,1 +1,23 @@
-Project
+<div class="container">
+  <div class="row">
+    <div class="col s12">
+      <h2>Project <span ng-bind="project_name"></span></h2>
+      <hr />
+    </div>
+    <div class="col l6 m4 s12">
+      <p class="description"><span future-ng-bind="project_description">This is a dummy project!</span></p>
+      <p>This project is a part of the class: <b><a href="#/classes/some_class"><span ng-bind="class_name"></span></a></b></p>
+    </div>
+    <div class="col l6 m8 s12">
+      <button class="waves-effect waves-light btn lighten-1 white-text" ng-click="newSubmission()">
+        <i class="fa fa-code-fork material-icons left"></i>Create a new submission
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <h1>Placeholder</h1>
+      <p>Someday, this will be a source code browser...</p>
+    </div>
+  </div>
+</div>
