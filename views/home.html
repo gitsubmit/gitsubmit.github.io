@@ -6,3 +6,34 @@
     <h5 class="white-text center">Short description here</h5>
   </div>
 </div>
+<div class="white">
+  <div class="container">
+    <div class="spacer50"></div>
+    <form name="signup">
+      <div class="row">
+        <div class="input-field col s10 offset-s1 m6 offset-m3 l6 offset-l3">
+          <input id="email" type="email" name="email" placeholder="email" ng-model="email" ng-required="true"/>
+          <label for="email" class="active">Email</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s10 offset-s1 m6 offset-m3 l6 offset-l3">
+          <input id="username" type="text" ng-model="username" name="username" placeholder="Username" ng-required="true"/>
+          <label for="username" class="active">Username</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s10 offset-s1 m6 offset-m3 l6 offset-l3">
+          <input id="password" type="password" name="password" placeholder="password" ng-model="password" ng-required="true"/>
+          <label for="password" class="active">Password</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col center s12 m12 l12">
+          <input type="submit" value="Sign Up" ng-click="submit()" class="waves-effect waves-light btn blue lighten-1 white-text"/>
+        </div>
+      </div>
+    </form>
+    <div class="spacer25"></div>
+  </div>
+</div>
