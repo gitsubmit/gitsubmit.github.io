@@ -51,9 +51,11 @@ app.config(['$routeProvider', function($routeProvider) {
   })
   .when('/classes/:class_name/projects/:project_name/source/:commit/:file_path*', {
     templateUrl: 'views/source_file.html',
+    controller: 'ViewFileCtrl'
   })
   .when('/:user_name/submissions/:submission_name', {
     templateUrl: 'views/submission.html',
+    controller: 'ViewSubmissionCtrl'
   })
   .otherwise({
     redirectTo: '/404'
@@ -327,3 +329,19 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     $('.modal-trigger').leanModal()
   })
 })
+
+app.controller('ViewFileCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+  $rootScope.root = {
+    route: 'Home',  // this corresponds to the menu item that should be active
+    title: 'View Submission'
+  }
+  //TODO: get info for proper URL and filling in appropriate fields
+}])
+
+app.controller('ViewSubmissionCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+  $rootScope.root = {
+    route: 'Home',  // this corresponds to the menu item that should be active
+    title: 'View File'
+  }
+  //TODO: get info for proper URL and filling in appropriate fields
+}])
