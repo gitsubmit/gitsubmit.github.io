@@ -123,6 +123,7 @@ app.controller('HomeCtrl', ['$scope', '$rootScope', function($scope, $rootScope)
   $(document).ready(function() {
     // close navbar if open
     $('#sidenav-overlay').trigger('click');
+    $('.parallax').parallax()
   })
 }])
 
