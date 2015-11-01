@@ -51,6 +51,7 @@ app.config(['$routeProvider', function($routeProvider) {
   })
   .when('/classes/:class_name/projects/:project_name/source/:commit/:file_path*', {
     templateUrl: 'views/source_file.html',
+    controller: 'FileBrowseCtrl'
   })
   .when('/:user_name/submissions/:submission_name', {
     templateUrl: 'views/submission.html',
@@ -59,6 +60,23 @@ app.config(['$routeProvider', function($routeProvider) {
     redirectTo: '/404'
   })
 }])
+
+app.factory('escapeHtml', function() {
+  var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+  }
+
+  return function(str) {
+    return String(str).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s]
+    })
+  }
+})
 
 app.factory('cachedGet', function($http, $localStorage, Consts) {
   return function(url, cacheKey, callbackSuccess, callbackFailure) {
@@ -371,4 +389,24 @@ app.controller('SignupFormCtrl', function($scope, $http) {
   $scope.submit = function() {
     alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
   }
+})
+
+app.controller('FileBrowseCtrl', function($scope, $rootScope, $http, $routeParams, escapeHtml) {
+  var class_name = $routeParams.class_name,
+      project_name = $routeParams.project_name,
+      commit = $routeParams.commit,
+      file_path = $routeParams.file_path
+
+  $scope.file_path = file_path
+
+  $http.get('/' + file_path).then(function(results) {
+    // success
+    // TODO: extension might not correspond to prism classes. See http://prismjs.com/index.html#languages-list
+    var extension = file_path.substr(file_path.lastIndexOf('.') + 1, file_path.length)
+    $('#browser-content').html(escapeHtml(results.data))
+    $('#browser').addClass('language-' + extension)
+    Prism.highlightAll()
+  }, function(results) {
+    // failure
+  })
 })
