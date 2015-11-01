@@ -120,6 +120,8 @@ app.controller('HomeCtrl', ['$scope', '$rootScope', function($scope, $rootScope)
     title: 'Home | GitSubmit'
   }
 
+  $scope.isLoggedIn = true
+
   $scope.classes = [
     {
       class_id: 'cs4485f15',
