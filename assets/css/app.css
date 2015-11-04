@@ -44,3 +44,12 @@ h1, h2, h3, h4, h5, h6 {
 .collection.with-header .collection-header.collection-header-accent {
   background-color: #eeeeee;
 }
+
+.clone-url-box-container {
+  padding: 5px;
+}
+
+.clone-url-box {
+  padding: 5px;
+  background-color: #ddd;
+}

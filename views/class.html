@@ -24,7 +24,13 @@
           <h5>Teachers</h5>
         </li>
         <li class="collection-item">
-          mrazo <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeProfessor($index, key.key_name)"></i></a>
+          mrazo <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeTeacher($index, key.key_name)"></i></a>
+        </li>
+        <li class="collection-item">
+          <div class="input-field">
+            <input placeholder="Press enter to add..." id="add_teacher" type="text">
+            <label for="add_student" class="active">Add teacher</label>
+          </div>
         </li>
       </ul>
 
@@ -40,6 +46,11 @@
         </li>
         <li class="collection-item">
           jdoe <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
+        </li>
+        <li class="collection-item">
+          <button class="waves-effect waves-light btn lighten-1 white-text" ng-click="newSubmission()">
+            <i class="fa fa-plus-square material-icons left"></i>Enroll here
+          </button>
         </li>
       </ul>
     </div>
