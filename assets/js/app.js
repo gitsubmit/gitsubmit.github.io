@@ -286,10 +286,10 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     $('ul.tabs').tabs()
   })
 
-  $scope.username = 'previous username'
+  $scope.name = 'previous name'
   $scope.email = 'previous email'
 
-  $scope.change_username = function(){
+  $scope.change_name = function(){
        alert($scope.username)
        // TODO:hook up to changing username
   }
