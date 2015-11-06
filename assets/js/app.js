@@ -120,7 +120,7 @@ app.controller('HomeCtrl', ['$scope', '$rootScope', function($scope, $rootScope)
     title: 'Home | GitSubmit'
   }
 
-  $scope.isLoggedIn = true
+  $scope.isLoggedIn = false
 
   $scope.classes = [
     {
@@ -152,6 +152,7 @@ app.controller('HomeCtrl', ['$scope', '$rootScope', function($scope, $rootScope)
   $(document).ready(function() {
     // close navbar if open
     $('#sidenav-overlay').trigger('click');
+    $('.parallax').parallax()
   })
 }])
 
@@ -185,10 +186,6 @@ app.controller('SignupCtrl', ['$scope', '$rootScope', function($scope, $rootScop
     route: 'Sign Up',  // this corresponds to the menu item that should be active
     title: 'Sign Up | GitSubmit'
   }
-
-  $scope.submit = function() {
-        alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
-      }
 }])
 
 app.controller('404Ctrl', ['$scope', '$rootScope', function($scope, $rootScope) {
@@ -367,5 +364,11 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
   $scope.change_email = function(){
        alert($scope.email)
        // TODO:hook up to changing email
+  }
+})
+
+app.controller('SignupFormCtrl', function($scope, $http) {
+  $scope.submit = function() {
+    alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
   }
 })
