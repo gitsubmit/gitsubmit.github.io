@@ -120,6 +120,35 @@ app.controller('HomeCtrl', ['$scope', '$rootScope', function($scope, $rootScope)
     title: 'Home | GitSubmit'
   }
 
+  $scope.isLoggedIn = true
+
+  $scope.classes = [
+    {
+      class_id: 'cs4485f15',
+      class_name: 'CS 4485 Senior Design Project',
+      prof_name: 'Razos'
+    }, {
+      class_id: 'meh',
+      class_name: 'Class Meh'
+    }
+  ]
+
+  $scope.projects = [
+    {
+      class_id: 'cs4485f15',
+      project_id: 'cs4485f15-final',
+      due_date: '12/02/2015'
+    }
+  ]
+
+  $scope.submissions = [
+    {
+      username: 'sonph',
+      submission_id: 'gitsubmit',
+      project: 'CS 4485 Final'
+    }
+  ]
+
   $(document).ready(function() {
     // close navbar if open
     $('#sidenav-overlay').trigger('click');
