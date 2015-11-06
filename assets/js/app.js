@@ -157,10 +157,6 @@ app.controller('SignupCtrl', ['$scope', '$rootScope', function($scope, $rootScop
     route: 'Sign Up',  // this corresponds to the menu item that should be active
     title: 'Sign Up | GitSubmit'
   }
-
-  $scope.submit = function() {
-        alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
-      }
 }])
 
 app.controller('404Ctrl', ['$scope', '$rootScope', function($scope, $rootScope) {
@@ -327,4 +323,10 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     $('input[length]').characterCounter()
     $('.modal-trigger').leanModal()
   })
+})
+
+app.controller('SignupFormCtrl', function($scope, $http) {
+  $scope.submit = function() {
+    alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
+  }
 })
