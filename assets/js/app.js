@@ -355,4 +355,17 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     $('input[length]').characterCounter()
     $('.modal-trigger').leanModal()
   })
+
+  $scope.name = 'previous name'
+  $scope.email = 'previous email'
+
+  $scope.change_name = function(){
+       alert($scope.username)
+       // TODO:hook up to changing username
+  }
+
+  $scope.change_email = function(){
+       alert($scope.email)
+       // TODO:hook up to changing email
+  }
 })
