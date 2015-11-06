@@ -1,46 +1,43 @@
 <form class="col s24" name="signup" ng-controller="SignupFormCtrl">
   <div class="row">
-    <div class="input-field col s24 m6 16">
+    <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
         <input
           type="email"
           id="email"
           name="email"
-          placeholder="email"
           ng-model="email"
           ng-required="true">
-      <label class="active" for="email">Email</label>
+      <label for="email">Email</label>
     </div>
   </div>
   <div class="row">
-    <div class="input-field col s24 m6 l6">
+    <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
       <input
         type="text"
         id="username"
         ng-model="username"
         name="username"
-        placeholder="Username"
         ng-required="true">
-      <label class="active" for="username">Username</label>
+      <label for="username">Username</label>
     </div>
   </div>
   <div class="row">
-    <div class="input-field col s24 m6 16">
+    <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
       <input
         type="password"
         id="password"
         name="password"
-        placeholder="password"
         ng-model="password"
         ng-required="true">
-      <label class="active" for="password">Password</label>
+      <label for="password">Password</label>
     </div>
   </div>
   <div class="row">
     <div class="col center s12 m12 l12">
       <input
         type="submit"
-        value="Submit"
-        class="waves-effect waves-light btn lighten-1 white-text"
+        value="Sign Up"
+        class="waves-effect waves-light btn blue lighten-1 white-text"
         ng-click="submit()">
     </div>
   </div>
