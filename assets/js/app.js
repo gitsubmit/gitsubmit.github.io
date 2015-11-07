@@ -399,6 +399,8 @@ app.controller('FileBrowseCtrl', function($scope, $rootScope, $http, $routeParam
 
   $scope.file_path = file_path
 
+  // TODO: change API url here
+
   $http.get('/' + file_path).then(function(results) {
     // success
     // TODO: extension might not correspond to prism classes. See http://prismjs.com/index.html#languages-list
