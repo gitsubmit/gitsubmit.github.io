@@ -397,7 +397,18 @@ app.controller('FileBrowseCtrl', function($scope, $rootScope, $http, $routeParam
       commit = $routeParams.commit,
       file_path = $routeParams.file_path
 
-  $scope.file_path = file_path
+  // parse file path into multiple clickable parts
+  $scope.file_path_tokens = []
+  var tokens = file_path.split('/').filter(function(token) { return token.length > 0 })
+
+  var path_prefix = '/#/classes/' + class_name + '/projects/' + project_name + '/source/' + commit + '/'
+
+  for (var i = 0; i < tokens.length; i++) {
+    $scope.file_path_tokens.push({
+      path: path_prefix + tokens.slice(0, i + 1).join('/'),
+      name: tokens[i]
+    })
+  }
 
   // TODO: change API url here
 

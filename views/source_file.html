@@ -4,7 +4,14 @@
 
     <!-- TODO: list files in the same folder above the file browser -->
 
-    <p>Browsing file {{ file_path }}</p>
+    <p>
+        Browsing
+        <span ng-repeat="token in file_path_tokens">
+            <span ng-show="$last">{{ token.name }}</span>
+            <a ng-hide="$last" href="{{ token.path }}">{{ token.name }}</a>
+            <span ng-hide="$last"> / </span>
+        </span>
+    </p>
 
     <!-- NOTE: there must not be any leading spaces within the <pre> element -->
     <pre class="line-numbers" id="browser">
