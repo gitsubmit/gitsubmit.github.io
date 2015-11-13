@@ -3,6 +3,7 @@ var app = angular.module('main', ['ngRoute', 'ngStorage'])
 app.constant('Consts', {
   API_RESPONSE_CACHE_EXPIRATION: 5 * 60 * 1000 * 1000,  // 5 mins
   GITHUB_API_REPO: 'https://api.github.com/repos/gitsubmit/gitsubmit.github.io/commits/master',
+  API_SERVER: typeof(API_SERVER) !== 'undefined' ? API_SERVER : 'http://api.gitsubmit.com'
 })
 
 app.config(['$routeProvider', function($routeProvider) {
