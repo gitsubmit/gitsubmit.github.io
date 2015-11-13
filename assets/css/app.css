@@ -39,3 +39,7 @@ h1, h2, h3, h4, h5, h6 {
 textarea#ssh_key_content {
   font-family: monospace;
 }
+
+pre.line-numbers {
+  border: 1px solid gray;
+}
