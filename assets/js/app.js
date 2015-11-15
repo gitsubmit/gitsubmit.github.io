@@ -460,5 +460,8 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams) 
     '1stcontr',
     '2ndcontr'
   ]
+
+  // TODO: set file url to the file API
+  $scope.file_url = 'index.html'
 })
 
