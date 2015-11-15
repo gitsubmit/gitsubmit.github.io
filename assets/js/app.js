@@ -51,8 +51,8 @@ app.config(['$routeProvider', function($routeProvider) {
     templateUrl: 'views/project.html',
   })
   .when('/classes/:class_name/projects/:project_name/source/:commit/:file_path*', {
-    templateUrl: 'views/source_file.html',
-    controller: 'FileBrowseCtrl'
+    templateUrl: 'views/project_file_browser.html',
+    controller: 'ProjectFileBrowserCtrl'
   })
   .when('/:user_name/submissions/:submission_name', {
     templateUrl: 'views/submission.html',
@@ -393,11 +393,34 @@ app.controller('SignupFormCtrl', function($scope, $http) {
   }
 })
 
-app.controller('FileBrowseCtrl', function($scope, $rootScope, $http, $routeParams, escapeHtml) {
+app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, escapeHtml) {
+  // NOTE: any scope that include this file browser scope should define
+  // $scope.file_url as the url to get the file content.
+  var file_url = $scope.file_url
+  $http.get(file_url).then(function(results) {
+    // success
+    // TODO: extension might not correspond to prism classes. See http://prismjs.com/index.html#languages-list
+    var extension = file_url.substr(file_url.lastIndexOf('.') + 1, file_url.length)
+    $(document).ready(function() {
+      console.log($('#browser-content').length)
+    $('#browser-content').html(escapeHtml(results.data))
+    $('#browser').addClass('language-' + extension)
+    })
+    Prism.highlightAll()
+  }, function(results) {
+    // failure
+  })
+})
+
+app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $routeParams) {
   var class_name = $routeParams.class_name,
       project_name = $routeParams.project_name,
       commit = $routeParams.commit,
       file_path = $routeParams.file_path
+
+  // export the file url to the child file browser scope
+  // TODO: change the prefix to match with the file API
+  $scope.file_url = '/' + file_path
 
   // parse file path into multiple clickable parts
   $scope.file_path_tokens = []
@@ -411,19 +434,6 @@ app.controller('FileBrowseCtrl', function($scope, $rootScope, $http, $routeParam
       name: tokens[i]
     })
   }
-
-  // TODO: change API url here
-
-  $http.get('/' + file_path).then(function(results) {
-    // success
-    // TODO: extension might not correspond to prism classes. See http://prismjs.com/index.html#languages-list
-    var extension = file_path.substr(file_path.lastIndexOf('.') + 1, file_path.length)
-    $('#browser-content').html(escapeHtml(results.data))
-    $('#browser').addClass('language-' + extension)
-    Prism.highlightAll()
-  }, function(results) {
-    // failure
-  })
 })
 
 app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams) {

@@ -1,0 +1,12 @@
+<div class="container">
+    <p>
+        Browsing
+        <span ng-repeat="token in file_path_tokens">
+            <span ng-show="$last">{{ token.name }}</span>
+            <a ng-hide="$last" href="{{ token.path }}">{{ token.name }}</a>
+            <span ng-hide="$last"> / </span>
+        </span>
+    </p>
+
+<div ng-include="'views/file_browser.html'"></div>
+</div>
