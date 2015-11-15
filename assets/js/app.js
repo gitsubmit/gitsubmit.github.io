@@ -54,6 +54,7 @@ app.config(['$routeProvider', function($routeProvider) {
   })
   .when('/:user_name/submissions/:submission_name', {
     templateUrl: 'views/submission.html',
+    controller: 'ViewSubmissionCtrl'
   })
   .otherwise({
     redirectTo: '/404'
@@ -371,4 +372,30 @@ app.controller('SignupFormCtrl', function($scope, $http) {
   $scope.submit = function() {
     alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
   }
+})
+
+app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams) {
+  var user_name = $routeParams.user_name,
+      submission_name = $routeParams.submission_name
+
+  $rootScope.root = {
+    title: 'Submission'
+  }
+
+  // TODO make API call
+  // project, class, contributors
+
+  $scope.project = {
+    url: '/#/classes/class/projects/project',
+    name: 'Project 1'
+  }
+
+  $scope.user_name = user_name
+
+  $scope.admin = true
+
+  $scope.contributors = [
+    '1stcontr',
+    '2ndcontr'
+  ]
 })

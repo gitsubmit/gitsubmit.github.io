@@ -1,1 +1,18 @@
-Submission
+
+<div class="container">
+  <div class="section">
+    <h3>Submission for <a href="{{ project.url }}">{{ project.name }} </a>by {{ user_name }}</h3>
+  </div>
+  <div ng-show="admin" class="section">
+    <!-- TODO: git url ssh://gitsubmit.com-->
+  </div>
+  <div ng-show="admin" class="section">
+    <h3>Contributors</h3>
+    <ul ng-repeat="contributor in contributors">
+      <li>{{ contributor }}</li>
+    </ul>
+  </div>
+  <div ng-show="admin" class="section">
+    <div ng-include="'views/file_browser.html'"></div>
+  </div>
+</div>
