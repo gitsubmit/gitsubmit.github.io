@@ -327,14 +327,18 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
     title: 'Account Settings'
   }
 
-  $http({
-    method: 'GET',
-    url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
-  }).then(function(results) {
-    $scope.keys = results.data.keys
-  }, function(results) {
+  $scope.getKeys = function() {
+    $http({
+      method: 'GET',
+      url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
+    }).then(function(results) {
+      $scope.keys = results.data.keys
+    }, function(results) {
 
-  })
+    })
+  }
+
+  $scope.getKeys()
 
   $scope.deleteKey = function(index, key_name) {
     alert('deleted ' + key_name)
@@ -363,7 +367,7 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
       }
     }).then(function(results) {
       $('#ssh_key_submit').removeClass('disabled blue red green').addClass('green')
-      $scope.keys.push(key_content)
+      $scope.getKeys()  // refresh the key list
       $('#ssh_key_submit_status').html('Success!')
       setTimeout(function() {
         $('#add_ssh_key').closeModal()
