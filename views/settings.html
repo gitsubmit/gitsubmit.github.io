@@ -129,8 +129,9 @@
       <div ng-repeat="key in keys">
         <!-- for documentation on ng-repeat: https://docs.angularjs.org/api/ng/directive/ngRepeat -->
         <div class="row">
-          <div class="col truncate s11 m4 l3 offset-l1"><!-- {{key.key_name}} --></div>
-          <div class="col truncate m7 l6 hide-on-small-only"><!-- {{key.key_contents}} --> {{ key }}</div>
+          <!-- <div class="col truncate s11 m4 l3 offset-l1">{{key.key_name}}</div> -->
+          <!-- <div class="col truncate m7 l6 hide-on-small-only">{{key.key_contents}}</div> -->
+          <div class="col truncate m7 l7 offset-m2 offset-l2">{{ key }}</div>
           <div class="col s1 m1 l1">
             <a>
               <i class="mdi-content-clear" ng-click="deleteKey($index, key.key_name)"></i>
@@ -149,7 +150,7 @@
         <div class="modal-content">
           <form class="col s12" name="ssh_key_form">
             <div class="row">
-              <div class="input-field">
+              <!-- <div class="input-field">
                 <input
                   type="text"
                   id="ssh_key_name"
@@ -160,7 +161,7 @@
                   ng-required="true"
                   >
                 <label for="ssh_key_name" class="active">Name</label>
-              </div>
+              </div> -->
               <div class="input-field">
                 <textarea
                   id="ssh_key_content"
