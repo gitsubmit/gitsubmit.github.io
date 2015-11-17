@@ -341,8 +341,19 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
   $scope.getKeys()
 
   $scope.deleteKey = function(index, key_name) {
-    alert('deleted ' + key_name)
-    $scope.keys.splice(index, 1)
+    // alert('deleted ' + key_name)
+    $http({
+      method: 'DELETE',
+      url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
+      data: {
+        pkey: $scope.keys[index]
+      }
+    }).then(function(results) {
+      $scope.keys.splice(index, 1)
+    }, function(results) {
+      console.log(results.data)
+      Materialize.toast(results.data.error, 4000)
+    })
     // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
   }
 
@@ -374,7 +385,8 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
       }, 2000)
     }, function(results) {
       $('#ssh_key_submit').removeClass('disabled blue red green').addClass('red')
-      $('#ssh_key_submit_status').html('Error: ' + results.data.error)
+      $('#ssh_key_submit_status').html(results.data.error)
+      Materialize.toast(results.data.error, 4000)
     })
   }
 
