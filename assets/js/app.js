@@ -322,10 +322,19 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
   })
 })
 
-app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
+app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage, Consts) {
   $rootScope.root = {
     title: 'Account Settings'
   }
+
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
+  }).then(function(results) {
+    $scope.keys = results.data.keys
+  }, function(results) {
+
+  })
 
   $scope.keys = [
     {
