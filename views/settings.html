@@ -177,15 +177,29 @@
             </div>
             <div class="row">
               <div class="col s12 m12 l10">
-                <input
+                <!-- <input
+                  id="ssh_key_submit"
                   type="submit"
                   value="Save"
                   class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
                   ng-class="{'disabled': ssh_key_form.ssh_key_name.$invalid || ssh_key_form.ssh_key_content.$invalid,
                              'blue': ssh_key_form.ssh_key_name.$valid && ssh_key_form.ssh_key_content.$valid}"
                   ng-click="submitKey(ssh_key_form.ssh_key_name.$valid && ssh_key_form.ssh_key_content.$valid)"
+                  > -->
+                <input
+                  id="ssh_key_submit"
+                  type="submit"
+                  value="Save"
+                  class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
+                  ng-class="{'disabled': ssh_key_form.ssh_key_content.$invalid,
+                             'blue': ssh_key_form.ssh_key_content.$valid}"
+                  ng-click="submitKey(ssh_key_form.ssh_key_content.$valid)"
                   >
+
               </div>
+            </div>
+            <div class="row">
+              <p id="ssh_key_submit_status" class="center-align"></p>
             </div>
           </form>
         </div>

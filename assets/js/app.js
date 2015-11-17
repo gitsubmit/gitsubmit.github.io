@@ -336,21 +336,6 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
 
   })
 
-  $scope.keys = [
-    {
-      key_name: 'wut',
-      key_contents: '0xDEADBEEF'
-    },
-    {
-      key_name: 'qux',
-      key_contents: '0x1337C0DE'
-    },
-    {
-      key_name: 'A very loooooooooooooooooooooooooooooooooooong name',
-      key_contents: 'A very looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong key'
-    }
-  ]
-
   $scope.deleteKey = function(index, key_name) {
     alert('deleted ' + key_name)
     $scope.keys.splice(index, 1)
@@ -369,8 +354,24 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
     if (!isValid) return
     var key_name = $scope.ssh_key_name
     var key_content = $scope.ssh_key_content
-    alert('name: ' + key_name + ', content: ' + key_content)
-    // TODO: POST api:/<username>/ssh_keys/ {key_name: <str>, key_contents: <str>}
+    // alert('name: ' + key_name + ', content: ' + key_content)
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
+      data: {
+        pkey_contents: key_content
+      }
+    }).then(function(results) {
+      $('#ssh_key_submit').removeClass('disabled blue red green').addClass('green')
+      $scope.keys.push(key_content)
+      $('#ssh_key_submit_status').html('Success!')
+      setTimeout(function() {
+        $('#add_ssh_key').closeModal()
+      }, 2000)
+    }, function(results) {
+      $('#ssh_key_submit').removeClass('disabled blue red green').addClass('red')
+      $('#ssh_key_submit_status').html('Error: ' + results.data.error)
+    })
   }
 
 
