@@ -103,7 +103,7 @@ app.factory('cachedGet', function($http, $localStorage, Consts) {
   }
 })
 
-app.run(function($rootScope, $location, Consts, cachedGet) {
+app.run(function($rootScope, $location, $http, Consts, cachedGet) {
   // index.html JavaScript setup code
   $(document).ready(function() {
     // Detect touch screen and enable scrollbar if necessary
@@ -179,7 +179,7 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage) {
     $('#sidenav-overlay').trigger('click');
     $('.parallax').parallax()
   })
-}])
+})
 
 app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
   $rootScope.root = {
@@ -194,7 +194,7 @@ app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope
   })
 }])
 
-app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, Consts) {
+app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, $location, Consts) {
   $rootScope.root = {
     route: 'Login',  // this corresponds to the menu item that should be active
     title: 'Login | GitSubmit'
@@ -212,7 +212,7 @@ app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, C
     }).then(function(results) {
       $localStorage.token = results.data.token
       $localStorage.username = $scope.username
-      // TODO redirect to /
+      $location.path('/')
     }, function(results) {
       $scope.login_status = results.data.error
     })
@@ -341,7 +341,7 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
   })
 })
 
-app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage, Consts) {
+app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage, $location, Consts) {
   $rootScope.root = {
     title: 'Account Settings'
   }
@@ -407,6 +407,12 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
       $('#ssh_key_submit_status').html(results.data.error)
       Materialize.toast(results.data.error, 4000)
     })
+  }
+
+  $scope.logout = function() {
+    delete $localStorage.username
+    delete $localStorage.token
+    $location.path('/')
   }
 
 
