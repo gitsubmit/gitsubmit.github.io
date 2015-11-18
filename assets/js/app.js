@@ -399,9 +399,23 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
   }
 })
 
-app.controller('SignupFormCtrl', function($scope, $http) {
+app.controller('SignupFormCtrl', function($scope, $http, $localStorage, Consts) {
   $scope.submit = function() {
-    alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
+    // alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/signup/',
+      data: {
+        username: $scope.username,
+        password: $scope.password,
+        email: $scope.email
+      }
+    }).then(function(results) {
+      $localStorage.token = results.data.token
+      $scope.signup_status = 'Success!'
+    }, function(results) {
+      $scope.signup_status = results.data.error
+    })
   }
 })
 
