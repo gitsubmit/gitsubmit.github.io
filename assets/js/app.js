@@ -6,7 +6,7 @@ app.constant('Consts', {
   API_SERVER: typeof(API_SERVER) !== 'undefined' ? API_SERVER : 'http://api.gitsubmit.com'
 })
 
-app.config(['$routeProvider', function($routeProvider) {
+app.config(function($routeProvider, $httpProvider) {
   $routeProvider.when('/', {
     templateUrl: 'views/home.html',
     controller: 'HomeCtrl'
@@ -61,7 +61,10 @@ app.config(['$routeProvider', function($routeProvider) {
   .otherwise({
     redirectTo: '/404'
   })
-}])
+
+  $httpProvider.defaults.useXDomain = true
+  // delete $httpProvider.defaults.headers.common['X-Requested-With']
+})
 
 app.factory('escapeHtml', function() {
   var entityMap = {
@@ -100,7 +103,7 @@ app.factory('cachedGet', function($http, $localStorage, Consts) {
   }
 })
 
-app.run(function($rootScope, $location, Consts, cachedGet) {
+app.run(function($rootScope, $location, $http, Consts, cachedGet) {
   // index.html JavaScript setup code
   $(document).ready(function() {
     // Detect touch screen and enable scrollbar if necessary
@@ -134,13 +137,15 @@ app.run(function($rootScope, $location, Consts, cachedGet) {
   })
 })
 
-app.controller('HomeCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+app.controller('HomeCtrl', function($scope, $rootScope, $localStorage) {
   $rootScope.root = {
     route: 'Home',  // this corresponds to the menu item that should be active
     title: 'Home | GitSubmit'
   }
 
-  $scope.isLoggedIn = false
+  var token = $localStorage.token
+
+  $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
 
   $scope.classes = [
     {
@@ -174,7 +179,7 @@ app.controller('HomeCtrl', ['$scope', '$rootScope', function($scope, $rootScope)
     $('#sidenav-overlay').trigger('click');
     $('.parallax').parallax()
   })
-}])
+})
 
 app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
   $rootScope.root = {
@@ -189,7 +194,7 @@ app.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope
   })
 }])
 
-app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, Consts) {
+app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, $location, Consts) {
   $rootScope.root = {
     route: 'Login',  // this corresponds to the menu item that should be active
     title: 'Login | GitSubmit'
@@ -207,7 +212,7 @@ app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, C
     }).then(function(results) {
       $localStorage.token = results.data.token
       $localStorage.username = $scope.username
-      // TODO redirect to /
+      $location.path('/')
     }, function(results) {
       $scope.login_status = results.data.error
     })
@@ -336,7 +341,7 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
   })
 })
 
-app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage, Consts) {
+app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage, $location, Consts) {
   $rootScope.root = {
     title: 'Account Settings'
   }
@@ -404,6 +409,12 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
     })
   }
 
+  $scope.logout = function() {
+    delete $localStorage.username
+    delete $localStorage.token
+    $location.path('/')
+  }
+
 
   $(document).ready(function() {
     $('#sidenav-overlay').trigger('click');
@@ -426,7 +437,7 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
   }
 })
 
-app.controller('SignupFormCtrl', function($scope, $http, $localStorage, Consts) {
+app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $location, $route, Consts) {
   $scope.submit = function() {
     // alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
     $http({
@@ -439,7 +450,9 @@ app.controller('SignupFormCtrl', function($scope, $http, $localStorage, Consts) 
       }
     }).then(function(results) {
       $localStorage.token = results.data.token
+      $localStorage.username = $scope.username
       $scope.signup_status = 'Success!'
+      $route.reload()
     }, function(results) {
       $scope.signup_status = results.data.error
     })
