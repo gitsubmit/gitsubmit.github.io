@@ -323,29 +323,38 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
   })
 })
 
-app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
+app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage, Consts) {
   $rootScope.root = {
     title: 'Account Settings'
   }
 
-  $scope.keys = [
-    {
-      key_name: 'wut',
-      key_contents: '0xDEADBEEF'
-    },
-    {
-      key_name: 'qux',
-      key_contents: '0x1337C0DE'
-    },
-    {
-      key_name: 'A very loooooooooooooooooooooooooooooooooooong name',
-      key_contents: 'A very looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong key'
-    }
-  ]
+  $scope.getKeys = function() {
+    $http({
+      method: 'GET',
+      url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
+    }).then(function(results) {
+      $scope.keys = results.data.keys
+    }, function(results) {
+
+    })
+  }
+
+  $scope.getKeys()
 
   $scope.deleteKey = function(index, key_name) {
-    alert('deleted ' + key_name)
-    $scope.keys.splice(index, 1)
+    // alert('deleted ' + key_name)
+    $http({
+      method: 'DELETE',
+      url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
+      data: {
+        pkey: $scope.keys[index]
+      }
+    }).then(function(results) {
+      $scope.keys.splice(index, 1)
+    }, function(results) {
+      console.log(results.data)
+      Materialize.toast(results.data.error, 4000)
+    })
     // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
   }
 
@@ -361,8 +370,25 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http) {
     if (!isValid) return
     var key_name = $scope.ssh_key_name
     var key_content = $scope.ssh_key_content
-    alert('name: ' + key_name + ', content: ' + key_content)
-    // TODO: POST api:/<username>/ssh_keys/ {key_name: <str>, key_contents: <str>}
+    // alert('name: ' + key_name + ', content: ' + key_content)
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
+      data: {
+        pkey_contents: key_content
+      }
+    }).then(function(results) {
+      $('#ssh_key_submit').removeClass('disabled blue red green').addClass('green')
+      $scope.getKeys()  // refresh the key list
+      $('#ssh_key_submit_status').html('Success!')
+      setTimeout(function() {
+        $('#add_ssh_key').closeModal()
+      }, 2000)
+    }, function(results) {
+      $('#ssh_key_submit').removeClass('disabled blue red green').addClass('red')
+      $('#ssh_key_submit_status').html(results.data.error)
+      Materialize.toast(results.data.error, 4000)
+    })
   }
 
 
@@ -434,6 +460,17 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
       name: tokens[i]
     })
   }
+
+  $http.get('/' + file_path).then(function(results) {
+    // success
+    // TODO: extension might not correspond to prism classes. See http://prismjs.com/index.html#languages-list
+    var extension = file_path.substr(file_path.lastIndexOf('.') + 1, file_path.length)
+    $('#browser-content').html(escapeHtml(results.data))
+    $('#browser').addClass('language-' + extension)
+    Prism.highlightAll()
+  }, function(results) {
+    // failure
+  })
 })
 
 app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams) {
