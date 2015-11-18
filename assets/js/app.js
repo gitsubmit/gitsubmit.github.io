@@ -437,7 +437,7 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
   }
 })
 
-app.controller('SignupFormCtrl', function($scope, $http, $localStorage, Consts) {
+app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $location, $route, Consts) {
   $scope.submit = function() {
     // alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
     $http({
@@ -450,7 +450,9 @@ app.controller('SignupFormCtrl', function($scope, $http, $localStorage, Consts) 
       }
     }).then(function(results) {
       $localStorage.token = results.data.token
+      $localStorage.username = $scope.username
       $scope.signup_status = 'Success!'
+      $route.reload()
     }, function(results) {
       $scope.signup_status = results.data.error
     })
