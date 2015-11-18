@@ -244,7 +244,7 @@ app.controller('ClassCtrl', ['$scope', '$rootScope', '$routeParams', function($s
   $scope.class_name = class_name
 }])
 
-app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
+app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location, Consts) {
   $rootScope.root = {
     title: 'Create a New Class'
   }
@@ -257,20 +257,24 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http) {
 
     $scope.formStatus = 'submitting'
 
-    // TODO
-    var url = '';
-    $http.post(url, {
-      class_name: $scope.class_name,
-      url_name: $scope.class_id,
-      description: $scope.class_description,
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/classes/',
+      data: {
+        class_name: $scope.class_name,
+        url_name: $scope.class_id,
+        description: $scope.class_description,
+      }
     }).then(function(response) {
       // success
-      // TODO: redirect to /classes/ view
       $scope.formStatus = 'ready'
+      var new_path = '/classses/' + $scope.class_id
+      console.log(new_path)
+      $location.path(new_path)
     }, function(response) {
       // error
-      // TODO: notify user of error
       $scope.formStatus = 'failure'
+      Materialize.toast(response.data.error, 4000)
     })
   }
 })
