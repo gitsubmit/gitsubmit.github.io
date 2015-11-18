@@ -6,7 +6,7 @@ app.constant('Consts', {
   API_SERVER: typeof(API_SERVER) !== 'undefined' ? API_SERVER : 'http://api.gitsubmit.com'
 })
 
-app.config(['$routeProvider', function($routeProvider) {
+app.config(function($routeProvider, $httpProvider) {
   $routeProvider.when('/', {
     templateUrl: 'views/home.html',
     controller: 'HomeCtrl'
@@ -61,7 +61,10 @@ app.config(['$routeProvider', function($routeProvider) {
   .otherwise({
     redirectTo: '/404'
   })
-}])
+
+  $httpProvider.defaults.useXDomain = true
+  // delete $httpProvider.defaults.headers.common['X-Requested-With']
+})
 
 app.factory('escapeHtml', function() {
   var entityMap = {
@@ -134,13 +137,15 @@ app.run(function($rootScope, $location, Consts, cachedGet) {
   })
 })
 
-app.controller('HomeCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+app.controller('HomeCtrl', function($scope, $rootScope, $localStorage) {
   $rootScope.root = {
     route: 'Home',  // this corresponds to the menu item that should be active
     title: 'Home | GitSubmit'
   }
 
-  $scope.isLoggedIn = false
+  var token = $localStorage.token
+
+  $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
 
   $scope.classes = [
     {
