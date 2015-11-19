@@ -1,21 +1,36 @@
 
 <div class="container">
-  <div class="section">
-    <h3>Submission for <a href="{{ project.url }}">{{ project.name }} </a>by {{ user_name }}</h3>
+  <div ng-show="status_class === 'loading' || status_project === 'loading'" class="section">
+    <div class="preloader-wrapper active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div ng-show="admin" class="section">
-    <!-- TODO: git url ssh://gitsubmit.com-->
+  <div ng-show="status_class === 'ready' &amp;&amp; status_project === 'ready'" class="section">
+    <div class="spacer50"></div>
+    <h3>Submission {{ submission.owner }}/{{ submission.long_name }}</h3>
+    <hr/>
+    <p>Owner: {{ submission.owner }}</p>
+    <p ng-show="submission.contributors.length &gt; 0">Contributors: {{ submission.contributors.join(', ') }}</p>
+    <p>Class: <a href="{{ '/#/classes/' + project_id }}">{{ class.long_name }}</a></p>
+    <p>Project: <a href="{{ '/#/classes/' + project_id + '/projects/' + project_id }}">{{ project.long_name }}</a></p>
+    <p>Project Description: {{ project.description }}</p>
+    <p>Project Due Date: {{ project.due }}</p>
   </div>
-  <div ng-show="admin" class="section">
-    <h3>Contributors</h3>
-    <ul ng-repeat="contributor in contributors">
-      <li>{{ contributor }}</li>
-    </ul>
-  </div>
-  <div ng-show="admin" class="section">
+  <div ng-show="admin &amp;&amp; status_class === 'ready' &amp;&amp; status_project === 'ready'" class="section">
+    <p>Git URL: <span><code>ssh://gitsubmit.com/{{ submission.gitolite_url }}</code></span></p>
+    <hr/>
     <div ng-include="'views/file_browser.html'"></div>
-  </div>
-  <div ng-show="admin" class="section">
+    <hr/>
     <!-- TODO: move this button to another place that makes more sense--><a class="btn waves-effect waves-light red lighten-1 white-text">delete this submission</a>
   </div>
 </div>

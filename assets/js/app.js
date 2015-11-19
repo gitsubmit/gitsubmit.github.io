@@ -568,6 +568,7 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location,
   }, function(results) {
     // failure
     $scope.file_browser_status = 'ready'
+    Materialize.toast(results.data ? results.data.error : 'Error loading file browser', 4000)
   })
 })
 
@@ -599,7 +600,7 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
   }
 })
 
-app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, $location, Consts) {
+app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, $location, $localStorage, $http, Consts) {
   var user_name = $routeParams.user_name,
       submission_name = $routeParams.submission_name
 
@@ -607,22 +608,40 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, 
     title: 'Submission'
   }
 
-  // TODO make API call
-  // project, class, contributors
-
-  $scope.project = {
-    url: '/#/classes/class/projects/project',
-    name: 'Project 1'
+  var error = function(res) {
+    Materialize.toast(res.data ? res.data.error : 'Error getting submission', 4000)
   }
 
-  $scope.user_name = user_name
+  $scope.status_class = 'loading'
+  $scope.status_project = 'loading'
+  $scope.admin = false 
 
-  $scope.admin = true
-
-  $scope.contributors = [
-    '1stcontr',
-    '2ndcontr'
-  ]
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/' + user_name + '/submissions/' + submission_name + '/'
+  }).then(function(res) {
+    var submission = res.data.submission
+    $scope.submission = submission
+    $scope.admin = $localStorage.username === submission.owner || $localStorage.username in submission.contributors
+    var class_id = submission.parent.split('/')[0]
+    var project_id = submission.parent.split('/')[1]
+    $scope.class_id = class_id
+    $scope.project_id = project_id
+    $http({
+      method: 'GET',
+      url: Consts.API_SERVER + '/classes/' + class_id + '/'
+    }).then(function(res) {
+      $scope.class = res.data.class
+      $scope.status_class = 'ready'
+    }, error)
+    $http({
+      method: 'GET',
+      url: Consts.API_SERVER + '/classes/' + class_id + '/projects/' + project_id + '/'
+    }).then(function(res) {
+      $scope.project = res.data.project
+      $scope.status_project = 'ready'
+    }, error)
+  }, error)
 
   $scope.file_url = Consts.API_SERVER + $location.url() + '/source/master/'
 })
