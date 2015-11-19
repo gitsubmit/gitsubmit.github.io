@@ -511,12 +511,22 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, escapeHtml
     url: file_url
   }).then(function(results) {
     // success
-    // TODO: extension might not correspond to prism classes. See http://prismjs.com/index.html#languages-list
     var extension = file_url.substr(file_url.lastIndexOf('.') + 1, file_url.length)
+    // console.log(extension)
+
+    // translate file extension to prism language class
+    var language = {
+      'md': 'markup',
+      'js': 'javascript',
+      'sh': 'bash',
+      'py': 'python',
+      'rb': 'ruby'
+    }[extension] || extension
+
     $(document).ready(function() {
       console.log($('#browser-content').length)
     $('#browser-content').html(escapeHtml(results.data))
-    $('#browser').addClass('language-' + extension)
+    $('#browser').addClass('language-' + language)
     })
     Prism.highlightAll()
   }, function(results) {
