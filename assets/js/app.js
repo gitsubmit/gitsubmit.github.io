@@ -526,50 +526,54 @@ app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $locatio
   }
 })
 
-app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location, escapeHtml) {
+app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location, Consts, escapeHtml) {
+  $scope.load = function(url, reload) {
+    if (reload) return
+
+    $scope.file_browser_status = 'loading'
+
+    $http({
+      method: 'GET',
+      url: Consts.API_SERVER + url
+    }).then(function(results) {
+      $scope.file_browser_status = 'ready'
+      $scope.file_type = results.headers('is_tree') === 'True' ? 'dir' : 'file'
+
+      if ($scope.file_type === 'file') {
+        var extension = url.substr(url.lastIndexOf('.') + 1, url.length)
+        // console.log(extension)
+
+        // translate file extension to prism language class
+        var language = {
+          'md': 'markup',
+          'js': 'javascript',
+          'sh': 'bash',
+          'py': 'python',
+          'rb': 'ruby'
+        }[extension] || extension
+
+        $(document).ready(function() {
+          $('#browser-content').html(escapeHtml(results.data))
+          $('#browser').addClass('language-' + language)
+        })
+        Prism.highlightAll()
+      } else if ($scope.file_type === 'dir') {
+        var files = results.data.files
+        for (var i = 0; i < files.length; i++) {
+          files[i].url = $location.url() + ($location.url().endsWith('/') ? '' : '/') + files[i].name
+        }
+        $scope.files = files
+      }
+    }, function(results) {
+      // failure
+      $scope.file_browser_status = 'ready'
+      Materialize.toast(results.data ? results.data.error : 'Error loading file browser', 4000)
+    })
+  }
+
   // NOTE: any scope that include this file browser scope should define
   // $scope.file_url as the url to get the file content.
-  var file_url = $scope.file_url
-
-  $scope.file_browser_status = 'loading'
-
-  $http({
-    method: 'GET',
-    url: file_url
-  }).then(function(results) {
-    $scope.file_browser_status = 'ready'
-    $scope.file_type = results.headers('is_tree') === 'True' ? 'dir' : 'file'
-
-    if ($scope.file_type === 'file') {
-      var extension = file_url.substr(file_url.lastIndexOf('.') + 1, file_url.length)
-      // console.log(extension)
-
-      // translate file extension to prism language class
-      var language = {
-        'md': 'markup',
-        'js': 'javascript',
-        'sh': 'bash',
-        'py': 'python',
-        'rb': 'ruby'
-      }[extension] || extension
-
-      $(document).ready(function() {
-        $('#browser-content').html(escapeHtml(results.data))
-        $('#browser').addClass('language-' + language)
-      })
-      Prism.highlightAll()
-    } else if ($scope.file_type === 'dir') {
-      var files = results.data.files
-      for (var i = 0; i < files.length; i++) {
-        files[i].url = '/#' + $location.url() + ($location.url().endsWith('/') ? '' : '/') + files[i].name
-      }
-      $scope.files = files
-    }
-  }, function(results) {
-    // failure
-    $scope.file_browser_status = 'ready'
-    Materialize.toast(results.data ? results.data.error : 'Error loading file browser', 4000)
-  })
+  $scope.load($scope.file_url, false)
 })
 
 app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $routeParams, $location, Consts) {
@@ -578,8 +582,10 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
       commit = $routeParams.commit,
       file_path = $routeParams.file_path
 
+
   // export the file url to the child file browser scope
-  $scope.file_url = Consts.API_SERVER + $location.url()
+  $scope.file_url = $location.url()
+  $scope.reload = true
 
   // parse file path into multiple clickable parts
   var tokens = []

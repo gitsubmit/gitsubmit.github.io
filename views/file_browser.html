@@ -18,6 +18,6 @@
 </pre>
 
   <ul ng-show="file_browser_status === 'ready' && file_type === 'dir'" ng-repeat="file in files">
-    <li><a href="{{ file.url }}">{{ file.name }}<span ng-show="file.type === 'dir'">/</span></a></li>
+    <li><a ng-click="load(file.url, reload)" ng-href="{{ reload ? '/#' + file.url : '' }}">{{ file.name }}<span ng-show="file.type === 'dir'">/</span></a></li>
   </ul>
 </div>
