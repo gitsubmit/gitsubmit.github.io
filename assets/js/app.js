@@ -279,7 +279,7 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location,
   }
 })
 
-app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routeParams) {
+app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routeParams, $location, Consts) {
   var class_name = $routeParams.class_name
 
   $rootScope.root = {
@@ -321,16 +321,17 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
       due_date: $('#project_date').val()
     }
 
-    var url = ''
-
-    $http.post(url, data).then(function(response) {
-      // success
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/classes/' + class_name + '/projects/',
+      data: data,
+    }).then(function(response) {
       // TODO: redirect to /classes/<class>/projects/<project>
       $scope.formStatus = 'ready'
+      $location.path('/classes/' + class_name + '/projects/' + $scope.project_name)
     }, function(response) {
-      // error
-      // TODO: notify user of error
       $scope.formStatus = 'failure'
+      Materialize.toast(response.data.error, 4000)
     })
 
   }
