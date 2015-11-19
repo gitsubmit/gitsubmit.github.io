@@ -35,6 +35,10 @@ app.config(function($routeProvider, $httpProvider) {
   .when('/settings/ssh_keys', {
     templateUrl: 'views/settings_ssh_keys.html',
   })
+  .when('/classes', {
+    templateUrl: 'views/class_list.html',
+    controller: 'ClassListCtrl'
+  })
   .when('/classes/create', {
     templateUrl: 'views/class_create.html',
     controller: 'ClassCreateCtrl'
@@ -248,6 +252,25 @@ app.controller('404Ctrl', ['$scope', '$rootScope', function($scope, $rootScope) 
     title: '404 | GitSubmit'
   }
 }])
+
+app.controller('ClassListCtrl', function($scope, $rootScope, $http, Consts) {
+  $rootScope.root = {
+    title: 'Classes'
+  }
+
+  $scope.class_list_status = 'loading'
+
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/classes/'
+  }).then(function(res) {
+    $scope.class_list_status = 'ready'
+    $scope.classes = res.data.classes
+  }, function(res) {
+    $scope.class_list_status = 'ready'
+    Materialize.toast(res.data.error || 'Error getting the list of classes', 4000)
+  })
+})
 
 app.controller('ClassCtrl', ['$scope', '$rootScope', '$routeParams', function($scope, $rootScope, $routeParams) {
   var class_name = $routeParams.class_name
