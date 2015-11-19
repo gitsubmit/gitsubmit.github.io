@@ -2,20 +2,26 @@
   <div class="row">
     <h2>Class <span ng-bind="class_name"></span></h2>
     <hr />
-    <p class="description"><span future-ng-bind="class_description">This is a dummy class!</span></p>
-    <p>Owner: <b><span future-ng-bind="class_owner">mrazo</span></b></p>
+    <p class="description"><span ng-bind="class_description"></span></p>
+    <p>Owner: <b><span ng-bind="class_owner"></span></b></p>
   </div>
   <div class="row">
     <div class="col m8 s12">
       <ul class="collection with-header">
         <li class="collection-header collection-header-accent"><h3>Projects</h3></li>
-        <li class="collection-item"><a href="#/classes/some_class/projects/project_three">project_three</a><br>Due 10/31/2015</li>
-        <li class="collection-item"><a href="#/classes/some_class/projects/project_four">project_four</a><br>Due 12/5/2015</li>
+        <li ng-repeat="project in projects" class="collection-item">
+          <a href="#/classes/{{project.parent}}/projects/{{project.url_name}}">{{project.long_name}}</a>
+          <br>{{project.due}}
+        </li>
+        <li ng-show="!projects.length"><i>No projects!</i></li>
       </ul>
       <ul class="collection with-header">
         <li class="collection-header collection-header-accent"><h3>Projects (overdue)</h3></li>
-        <li class="collection-item"><a href="#/classes/some_class/projects/project_one">project_one</a><br><span>Due 8/31/2015</span></li>
-        <li class="collection-item"><a href="#/classes/some_class/projects/project_two">project_two</a><br><span>Due 9/8/2015</span></li>
+        <li ng-repeat="project in overdue_projects" class="collection-item">
+          <a href="#/classes/{{project.parent}}/projects/{{project.url_name}}">{{project.long_name}}</a>
+          <br>{{project.due}}
+        </li>
+        <li ng-show="!overdue_projects.length"><i>No overdue projects!</i></li>
       </ul>
     </div>
     <div class="col m4 s12">
@@ -23,8 +29,8 @@
         <li class="collection-header collection-header-accent">
           <h5>Teachers</h5>
         </li>
-        <li class="collection-item">
-          mrazo <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeTeacher($index, key.key_name)"></i></a>
+        <li ng-repeat="teacher in teachers" class="collection-item">
+          {{teacher}} <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeTeacher($index, key.key_name)"></i></a>
         </li>
         <li class="collection-item">
           <div class="input-field">
@@ -38,17 +44,12 @@
         <li class="collection-header collection-header-accent">
           <h5>Students</h5>
         </li>
-        <li class="collection-item">
-          shawkins <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
+        <li ng-repeat="student in students" class="collection-item">
+          {{student}} <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
         </li>
+        <li ng-show="!students.length"><i>No students currently enrolled!</i></li>
         <li class="collection-item">
-          jroe <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
-        </li>
-        <li class="collection-item">
-          jdoe <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
-        </li>
-        <li class="collection-item">
-          <button class="waves-effect waves-light btn lighten-1 white-text" ng-click="newSubmission()">
+          <button class="waves-effect waves-light btn lighten-1 white-text" future-ng-click="newSubmission()">
             <i class="fa fa-plus-square material-icons left"></i>Enroll here
           </button>
         </li>
