@@ -557,10 +557,12 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
   $scope.file_url = Consts.API_SERVER + $location.url()
 
   // parse file path into multiple clickable parts
-  $scope.file_path_tokens = []
   var tokens = file_path.split('/').filter(function(token) { return token.length > 0 })
-
   var path_prefix = '/#/classes/' + class_name + '/projects/' + project_name + '/source/' + commit + '/'
+  $scope.file_path_tokens = [{
+    path: path_prefix,
+    name: project_name
+  }]
 
   for (var i = 0; i < tokens.length; i++) {
     $scope.file_path_tokens.push({
