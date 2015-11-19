@@ -15,7 +15,7 @@
   </div>
   <ul ng-repeat="class in classes">
     <li>
-      <h5>{{ class.long_name }}</h5>
+      <h5><a href="{{'/#/classes/' + class.url_name}}">{{ class.long_name }}</a></h5>
       <p ng-show="class.description">{{ class.description }}</p>
       <p ng-show="class.teachers.length > 0">Teachers: {{ class.teachers.join(', ') }}</p>
       <p ng-show="class.students.length > 0">Students: {{ class.students.join(', ') }}</p>
