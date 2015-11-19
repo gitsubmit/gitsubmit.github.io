@@ -502,7 +502,7 @@ app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $locatio
   }
 })
 
-app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, escapeHtml) {
+app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location, escapeHtml) {
   // NOTE: any scope that include this file browser scope should define
   // $scope.file_url as the url to get the file content.
   var file_url = $scope.file_url
@@ -513,26 +513,34 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, escapeHtml
     method: 'GET',
     url: file_url
   }).then(function(results) {
-    console.log(results.headers())
     $scope.file_browser_status = 'ready'
-    // success
-    var extension = file_url.substr(file_url.lastIndexOf('.') + 1, file_url.length)
-    // console.log(extension)
+    $scope.file_type = results.headers('is_tree') === 'True' ? 'dir' : 'file'
 
-    // translate file extension to prism language class
-    var language = {
-      'md': 'markup',
-      'js': 'javascript',
-      'sh': 'bash',
-      'py': 'python',
-      'rb': 'ruby'
-    }[extension] || extension
+    if ($scope.file_type === 'file') {
+      var extension = file_url.substr(file_url.lastIndexOf('.') + 1, file_url.length)
+      // console.log(extension)
 
-    $(document).ready(function() {
-      $('#browser-content').html(escapeHtml(results.data))
-      $('#browser').addClass('language-' + language)
-    })
-    Prism.highlightAll()
+      // translate file extension to prism language class
+      var language = {
+        'md': 'markup',
+        'js': 'javascript',
+        'sh': 'bash',
+        'py': 'python',
+        'rb': 'ruby'
+      }[extension] || extension
+
+      $(document).ready(function() {
+        $('#browser-content').html(escapeHtml(results.data))
+        $('#browser').addClass('language-' + language)
+      })
+      Prism.highlightAll()
+    } else if ($scope.file_type === 'dir') {
+      var files = results.data.files
+      for (var i = 0; i < files.length; i++) {
+        files[i].url = '/#' + $location.url() + '/' + files[i].name
+      }
+      $scope.files = files
+    }
   }, function(results) {
     // failure
     $scope.file_browser_status = 'ready'

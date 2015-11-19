@@ -13,7 +13,11 @@
   </div>
 
 <!-- NOTE: there must not be any leading spaces within the <pre> element -->
-<pre ng-show="file_browser_status === 'ready'" class="line-numbers" id="browser">
+<pre ng-show="file_browser_status === 'ready' && file_type === 'file'" class="line-numbers" id="browser">
 <code id="browser-content"></code>
 </pre>
+
+  <ul ng-show="file_browser_status === 'ready' && file_type === 'dir'" ng-repeat="file in files">
+    <li><a href="{{ file.url }}">{{ file.name }}<span ng-show="file.type === 'dir'">/</span></a></li>
+  </ul>
 </div>
