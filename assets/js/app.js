@@ -169,12 +169,27 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage, $http, Co
 
   $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
 
+  var now = new Date()
+  $scope.today_date = [
+    now.getFullYear(),
+    now.getMonth() + 1,
+    now.getDate()
+  ].join('-')
+
   $http({
     method: 'GET',
     url: Consts.API_SERVER + '/' + $localStorage.username + '/landing/'
   }).then(function(res) {
     $scope.classes = res.data.classes
     $scope.projects = res.data.projects
+    $scope.projects.sort(function(a, b) {
+      if (a.due < b.due) {
+        return -1
+      } else if (a.due > b.due) {
+        return 1
+      }
+      return 0
+    })
     $scope.submissions = res.data.submissions
   }, function(res) {
     Materialize.toast(res.data ? res.data.error : 'Error loading', 4000)

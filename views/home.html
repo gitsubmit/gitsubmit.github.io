@@ -35,7 +35,7 @@
             <p ng-show="project.description && project.description !== ''">
               {{ project.description }}
             </p>
-            <p ng-show="project.due">
+            <p ng-show="project.due" ng-class="{'red-text text-lighten-1': today_date >= project.due}">
               Due: {{ project.due }}
             </p>
             <p ng-show="project.is_team_based || project.is_team_based.toLowerCase() === 'true'">
