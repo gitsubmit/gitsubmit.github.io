@@ -312,13 +312,34 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
 
     $scope.formStatus = 'submitting'
 
+    // reformatting date as %Y-%m-%d
+    // e.g. '19 November, 2015' -> '2015-11-19'
+    var due_date = $('#project_date').val()
+    var due_date_fields = due_date.split(' ')
+    var due_date_month = {
+      'January,': '01',
+      'February,': '02',
+      'March,': '03',
+      'April,': '04',
+      'May,': '05',
+      'June,': '06',
+      'July,': '07',
+      'August,': '08',
+      'September,': '09',
+      'October,': '10',
+      'November,': '11',
+      'December,': '12'
+    }[due_date_fields[1]]
+    due_date = due_date_fields[2] + '-' + due_date_month + '-' + due_date_fields[0]
+
+
     var data = {
       project_name: $scope.project_name,
       url_name: $scope.project_id,
       description: $scope.project_description,
       team_based: $scope.project_team || false, // default false if value is undefined
       max_members: $scope.project_members || 1, // default 1 if value is undefined
-      due_date: $('#project_date').val()
+      due_date: due_date
     }
 
     $http({
