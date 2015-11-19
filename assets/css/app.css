@@ -52,4 +52,23 @@ h1, h2, h3, h4, h5, h6 {
 .clone-url-box {
   padding: 5px;
   background-color: #ddd;
+
+/* SSH key content should be monospaced */
+textarea#ssh_key_content {
+  font-family: monospace;
+}
+
+pre.line-numbers {
+  border: 1px solid gray;
+}
+
+.preloader-wrapper.active {
+  left: 45%;
+}
+
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }

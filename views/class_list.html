@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="spacer50"></div>
+  <h3>All Classes</h3>
+  <hr>
+  <div ng-show="class_list_status === 'loading'" class="preloader-wrapper active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+  <ul ng-repeat="class in classes">
+    <li>
+      <h5><a href="{{'/#/classes/' + class.url_name}}">{{ class.long_name }}</a></h5>
+      <p ng-show="class.description">{{ class.description }}</p>
+      <p ng-show="class.teachers.length > 0">Teachers: {{ class.teachers.join(', ') }}</p>
+      <p ng-show="class.students.length > 0">Students: {{ class.students.join(', ') }}</p>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,23 @@
+<div ng-controller="FileBrowserCtrl">
+  <!-- TODO: fix CSS true centering instead of left 45%, see app.css -->
+  <div ng-show="file_browser_status === 'loading'" class="preloader-wrapper active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+
+<!-- NOTE: there must not be any leading spaces within the <pre> element -->
+<pre ng-show="file_browser_status === 'ready' && file_type === 'file'" class="line-numbers" id="browser">
+<code id="browser-content"></code>
+</pre>
+
+  <ul ng-show="file_browser_status === 'ready' && file_type === 'dir'" ng-repeat="file in files">
+    <li><a href="{{ file.url }}">{{ file.name }}<span ng-show="file.type === 'dir'">/</span></a></li>
+  </ul>
+</div>
