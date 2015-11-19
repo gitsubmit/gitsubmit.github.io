@@ -599,13 +599,45 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
   }
 })
 
-app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, $location, Consts) {
+app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, $location, $localStorage, $http, Consts) {
   var user_name = $routeParams.user_name,
       submission_name = $routeParams.submission_name
 
   $rootScope.root = {
     title: 'Submission'
   }
+
+  var error = function(res) {
+    Materialize.toast(res.data ? res.data.error : 'Error getting submission', 4000)
+  }
+
+  $scope.status_class = 'loading'
+  $scope.status_project = 'loading'
+
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/' + user_name + '/submissions/' + submission_name + '/'
+  }).then(function(res) {
+    $scope.submission = res.data.submission
+    var class_id = res.data.submission.parent.split('/')[0]
+    var project_id = res.data.submission.parent.split('/')[1]
+    $scope.class_id = class_id
+    $scope.project_id = project_id
+    $http({
+      method: 'GET',
+      url: Consts.API_SERVER + '/classes/' + class_id + '/'
+    }).then(function(res) {
+      $scope.class = res.data.class
+      $scope.status_class = 'ready'
+    }, error)
+    $http({
+      method: 'GET',
+      url: Consts.API_SERVER + '/classes/' + class_id + '/projects/' + project_id + '/'
+    }).then(function(res) {
+      $scope.project = res.data.project
+      $scope.status_project = 'ready'
+    }, error)
+  }, error)
 
   // TODO make API call
   // project, class, contributors
