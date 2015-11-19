@@ -53,6 +53,7 @@ app.config(function($routeProvider, $httpProvider) {
   })
   .when('/classes/:class_name/projects/:project_name', {
     templateUrl: 'views/project.html',
+    controller: 'ProjectCtrl'
   })
   .when('/classes/:class_name/projects/:project_name/source/:commit/:file_path*?', {
     templateUrl: 'views/project_file_browser.html',

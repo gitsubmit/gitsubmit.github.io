@@ -35,6 +35,24 @@ h1, h2, h3, h4, h5, h6 {
   height: 350px;
 }
 
+/* class and project pages */
+.description {
+  color: #777;
+  font-style: italic;
+}
+
+.collection.with-header .collection-header.collection-header-accent {
+  background-color: #eeeeee;
+}
+
+.clone-url-box-container {
+  padding: 5px;
+}
+
+.clone-url-box {
+  padding: 5px;
+  background-color: #ddd;
+
 /* SSH key content should be monospaced */
 textarea#ssh_key_content {
   font-family: monospace;
