@@ -280,38 +280,38 @@ app.controller('ClassCtrl', function($scope, $rootScope, $http, $routeParams, Co
     title: 'Class ' + class_name + ' | GitSubmit'
   }
 
-  $scope.class_list_status = 'loading'
+  $scope.status = 'loading'
 
   $http({
     method: 'GET',
     url: Consts.API_SERVER + '/classes/' + class_name + "/"
   }).then(function(res) {
-    $scope.class_description = res.data.class.description
-    $scope.class_owner = res.data.class.owner
     $scope.class = res.data.class
-    $scope.students = res.data.class.students
-    $scope.teachers = res.data.class.teachers
+    $scope.status = 'ready'
   }, function(res) {
-    Materialize.toast(res.data.error || 'Error getting class', 4000)
+    Materialize.toast(res.data ? res.data.error : 'Error getting class', 4000)
   })
-
 
   $http({
     method: 'GET',
     url: Consts.API_SERVER + '/classes/' + class_name + "/projects/"
   }).then(function(res) {
     $scope.projects = res.data.projects
-    $score.overdue_projects = res.data.overdue_projects
+    $scope.overdue_projects = res.data.overdue_projects
+    $scope.status = 'ready'
 
     //Materialize.toast(res.data.projects || 'um', 4000)
     //$scope.class_list_status = 'ready'
     //$scope.classes = res.data.classes
   }, function(res) {
-    //$scope.class_list_status = 'ready'
-    Materialize.toast(res.data.error || 'Error getting class', 4000)
+    Materialize.toast(res.data ? res.data.error : 'Error getting class', 4000)
   })
 
   $scope.class_name = class_name
+
+  $scope.removeTeacher = function(ind, key_name) {
+    // TODO
+  }
 })
 
 app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location, Consts) {

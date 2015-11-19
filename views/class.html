@@ -1,11 +1,25 @@
 <div class="container">
-  <div class="row">
-    <h2>Class <span ng-bind="class_name"></span></h2>
-    <hr />
-    <p class="description"><span ng-bind="class_description"></span></p>
-    <p>Owner: <b><span ng-bind="class_owner"></span></b></p>
+  <div class="spacer50"></div>
+  <div class="section" ng-show="status === 'loading'">
+    <div class="preloader-wrapper active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="row">
+  <div class="row" ng-show="status === 'ready'">
+    <h2>Class {{ class.long_name }}</h2>
+    <hr />
+    <p class="description">{{ class.description }}</p>
+    <p>Owner: <b>{{ class.owner }}</b></p>
+  </div>
+  <div class="row" ng-show="status === 'ready'">
     <div class="col m8 s12">
       <ul class="collection with-header">
         <li class="collection-header collection-header-accent"><h3>Projects</h3></li>
@@ -13,7 +27,7 @@
           <a href="#/classes/{{project.parent}}/projects/{{project.url_name}}">{{project.long_name}}</a>
           <br>{{project.due}}
         </li>
-        <li ng-show="!projects.length"><i>No projects!</i></li>
+        <li class="collection-item" ng-show="!projects.length"><i>No projects!</i></li>
       </ul>
       <ul class="collection with-header">
         <li class="collection-header collection-header-accent"><h3>Projects (overdue)</h3></li>
@@ -21,7 +35,7 @@
           <a href="#/classes/{{project.parent}}/projects/{{project.url_name}}">{{project.long_name}}</a>
           <br>{{project.due}}
         </li>
-        <li ng-show="!overdue_projects.length"><i>No overdue projects!</i></li>
+        <li class="collection-item" ng-show="!overdue_projects.length"><i>No overdue projects!</i></li>
       </ul>
     </div>
     <div class="col m4 s12">
@@ -30,7 +44,7 @@
           <h5>Teachers</h5>
         </li>
         <li ng-repeat="teacher in teachers" class="collection-item">
-          {{teacher}} <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeTeacher($index, key.key_name)"></i></a>
+          {{teacher}} <a href="#"><i class="mdi-content-clear secondary-content" ng-click="removeTeacher($index, key.key_name)"></i></a>
         </li>
         <li class="collection-item">
           <div class="input-field">
