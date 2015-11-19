@@ -159,7 +159,7 @@ app.run(function($rootScope, $location, $http, Consts, cachedGet) {
   })
 })
 
-app.controller('HomeCtrl', function($scope, $rootScope, $localStorage) {
+app.controller('HomeCtrl', function($scope, $rootScope, $localStorage, $http, Consts) {
   $rootScope.root = {
     route: 'Home',  // this corresponds to the menu item that should be active
     title: 'Home | GitSubmit'
@@ -169,32 +169,17 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage) {
 
   $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
 
-  $scope.classes = [
-    {
-      class_id: 'cs4485f15',
-      class_name: 'CS 4485 Senior Design Project',
-      prof_name: 'Razos'
-    }, {
-      class_id: 'meh',
-      class_name: 'Class Meh'
-    }
-  ]
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/' + $localStorage.username + '/landing/'
+  }).then(function(res) {
+    $scope.classes = res.data.classes
+    $scope.projects = res.data.projects
+    $scope.submissions = res.data.submissions
+  }, function(res) {
+    Materialize.toast(res.data ? res.data.error : 'Error loading', 4000)
+  })
 
-  $scope.projects = [
-    {
-      class_id: 'cs4485f15',
-      project_id: 'cs4485f15-final',
-      due_date: '12/02/2015'
-    }
-  ]
-
-  $scope.submissions = [
-    {
-      username: 'sonph',
-      submission_id: 'gitsubmit',
-      project: 'CS 4485 Final'
-    }
-  ]
 
   $(document).ready(function() {
     // close navbar if open
