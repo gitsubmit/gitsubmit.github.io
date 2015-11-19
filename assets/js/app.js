@@ -268,7 +268,7 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location,
     }).then(function(response) {
       // success
       $scope.formStatus = 'ready'
-      var new_path = '/classses/' + $scope.class_id
+      var new_path = '/classes/' + $scope.class_id
       console.log(new_path)
       $location.path(new_path)
     }, function(response) {
