@@ -506,10 +506,15 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, escapeHtml
   // NOTE: any scope that include this file browser scope should define
   // $scope.file_url as the url to get the file content.
   var file_url = $scope.file_url
+
+  $scope.file_browser_status = 'loading'
+
   $http({
     method: 'GET',
     url: file_url
   }).then(function(results) {
+    console.log(results.headers())
+    $scope.file_browser_status = 'ready'
     // success
     var extension = file_url.substr(file_url.lastIndexOf('.') + 1, file_url.length)
     // console.log(extension)
@@ -524,13 +529,13 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, escapeHtml
     }[extension] || extension
 
     $(document).ready(function() {
-      console.log($('#browser-content').length)
-    $('#browser-content').html(escapeHtml(results.data))
-    $('#browser').addClass('language-' + language)
+      $('#browser-content').html(escapeHtml(results.data))
+      $('#browser').addClass('language-' + language)
     })
     Prism.highlightAll()
   }, function(results) {
     // failure
+    $scope.file_browser_status = 'ready'
   })
 })
 
@@ -541,8 +546,6 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
       file_path = $routeParams.file_path
 
   // export the file url to the child file browser scope
-  // TODO: change the prefix to match with the file API
-  console.log($location.url())
   $scope.file_url = Consts.API_SERVER + $location.url()
 
   // parse file path into multiple clickable parts
@@ -559,7 +562,7 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
   }
 })
 
-app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams) {
+app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, $location, Consts) {
   var user_name = $routeParams.user_name,
       submission_name = $routeParams.submission_name
 
@@ -584,7 +587,6 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams) 
     '2ndcontr'
   ]
 
-  // TODO: set file url to the file API
-  $scope.file_url = 'index.html'
+  $scope.file_url = Consts.API_SERVER + $location.url() + '/source/master/'
 })
 
