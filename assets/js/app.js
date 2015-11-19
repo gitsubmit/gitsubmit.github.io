@@ -613,14 +613,17 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, 
 
   $scope.status_class = 'loading'
   $scope.status_project = 'loading'
+  $scope.admin = false 
 
   $http({
     method: 'GET',
     url: Consts.API_SERVER + '/' + user_name + '/submissions/' + submission_name + '/'
   }).then(function(res) {
-    $scope.submission = res.data.submission
-    var class_id = res.data.submission.parent.split('/')[0]
-    var project_id = res.data.submission.parent.split('/')[1]
+    var submission = res.data.submission
+    $scope.submission = submission
+    $scope.admin = $localStorage.username === submission.owner || $localStorage.username in submission.contributors
+    var class_id = submission.parent.split('/')[0]
+    var project_id = submission.parent.split('/')[1]
     $scope.class_id = class_id
     $scope.project_id = project_id
     $http({
@@ -638,23 +641,6 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, 
       $scope.status_project = 'ready'
     }, error)
   }, error)
-
-  // TODO make API call
-  // project, class, contributors
-
-  $scope.project = {
-    url: '/#/classes/class/projects/project',
-    name: 'Project 1'
-  }
-
-  $scope.user_name = user_name
-
-  $scope.admin = true
-
-  $scope.contributors = [
-    '1stcontr',
-    '2ndcontr'
-  ]
 
   $scope.file_url = Consts.API_SERVER + $location.url() + '/source/master/'
 })
