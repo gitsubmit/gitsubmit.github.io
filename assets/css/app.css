@@ -43,3 +43,7 @@ textarea#ssh_key_content {
 pre.line-numbers {
   border: 1px solid gray;
 }
+
+.preloader-wrapper.active {
+  left: 45%;
+}

@@ -502,40 +502,67 @@ app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $locatio
   }
 })
 
-app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, escapeHtml) {
+app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location, escapeHtml) {
   // NOTE: any scope that include this file browser scope should define
   // $scope.file_url as the url to get the file content.
   var file_url = $scope.file_url
-  $http.get(file_url).then(function(results) {
-    // success
-    // TODO: extension might not correspond to prism classes. See http://prismjs.com/index.html#languages-list
-    var extension = file_url.substr(file_url.lastIndexOf('.') + 1, file_url.length)
-    $(document).ready(function() {
-      console.log($('#browser-content').length)
-    $('#browser-content').html(escapeHtml(results.data))
-    $('#browser').addClass('language-' + extension)
-    })
-    Prism.highlightAll()
+
+  $scope.file_browser_status = 'loading'
+
+  $http({
+    method: 'GET',
+    url: file_url
+  }).then(function(results) {
+    $scope.file_browser_status = 'ready'
+    $scope.file_type = results.headers('is_tree') === 'True' ? 'dir' : 'file'
+
+    if ($scope.file_type === 'file') {
+      var extension = file_url.substr(file_url.lastIndexOf('.') + 1, file_url.length)
+      // console.log(extension)
+
+      // translate file extension to prism language class
+      var language = {
+        'md': 'markup',
+        'js': 'javascript',
+        'sh': 'bash',
+        'py': 'python',
+        'rb': 'ruby'
+      }[extension] || extension
+
+      $(document).ready(function() {
+        $('#browser-content').html(escapeHtml(results.data))
+        $('#browser').addClass('language-' + language)
+      })
+      Prism.highlightAll()
+    } else if ($scope.file_type === 'dir') {
+      var files = results.data.files
+      for (var i = 0; i < files.length; i++) {
+        files[i].url = '/#' + $location.url() + '/' + files[i].name
+      }
+      $scope.files = files
+    }
   }, function(results) {
     // failure
+    $scope.file_browser_status = 'ready'
   })
 })
 
-app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $routeParams) {
+app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $routeParams, $location, Consts) {
   var class_name = $routeParams.class_name,
       project_name = $routeParams.project_name,
       commit = $routeParams.commit,
       file_path = $routeParams.file_path
 
   // export the file url to the child file browser scope
-  // TODO: change the prefix to match with the file API
-  $scope.file_url = '/' + file_path
+  $scope.file_url = Consts.API_SERVER + $location.url()
 
   // parse file path into multiple clickable parts
-  $scope.file_path_tokens = []
   var tokens = file_path.split('/').filter(function(token) { return token.length > 0 })
-
   var path_prefix = '/#/classes/' + class_name + '/projects/' + project_name + '/source/' + commit + '/'
+  $scope.file_path_tokens = [{
+    path: path_prefix,
+    name: project_name
+  }]
 
   for (var i = 0; i < tokens.length; i++) {
     $scope.file_path_tokens.push({
@@ -543,20 +570,9 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
       name: tokens[i]
     })
   }
-
-  $http.get('/' + file_path).then(function(results) {
-    // success
-    // TODO: extension might not correspond to prism classes. See http://prismjs.com/index.html#languages-list
-    var extension = file_path.substr(file_path.lastIndexOf('.') + 1, file_path.length)
-    $('#browser-content').html(escapeHtml(results.data))
-    $('#browser').addClass('language-' + extension)
-    Prism.highlightAll()
-  }, function(results) {
-    // failure
-  })
 })
 
-app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams) {
+app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, $location, Consts) {
   var user_name = $routeParams.user_name,
       submission_name = $routeParams.submission_name
 
@@ -581,7 +597,6 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams) 
     '2ndcontr'
   ]
 
-  // TODO: set file url to the file API
-  $scope.file_url = 'index.html'
+  $scope.file_url = Consts.API_SERVER + $location.url() + '/source/master/'
 })
 
