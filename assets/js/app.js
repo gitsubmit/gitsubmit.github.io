@@ -50,7 +50,7 @@ app.config(function($routeProvider, $httpProvider) {
   .when('/classes/:class_name/projects/:project_name', {
     templateUrl: 'views/project.html',
   })
-  .when('/classes/:class_name/projects/:project_name/source/:commit/:file_path*', {
+  .when('/classes/:class_name/projects/:project_name/source/:commit/:file_path*?', {
     templateUrl: 'views/project_file_browser.html',
     controller: 'ProjectFileBrowserCtrl'
   })
@@ -537,7 +537,7 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location,
     } else if ($scope.file_type === 'dir') {
       var files = results.data.files
       for (var i = 0; i < files.length; i++) {
-        files[i].url = '/#' + $location.url() + '/' + files[i].name
+        files[i].url = '/#' + $location.url() + ($location.url().endsWith('/') ? '' : '/') + files[i].name
       }
       $scope.files = files
     }
@@ -557,7 +557,10 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
   $scope.file_url = Consts.API_SERVER + $location.url()
 
   // parse file path into multiple clickable parts
-  var tokens = file_path.split('/').filter(function(token) { return token.length > 0 })
+  var tokens = []
+  if (file_path) {
+    tokens = file_path.split('/').filter(function(token) { return token.length > 0 })
+  }
   var path_prefix = '/#/classes/' + class_name + '/projects/' + project_name + '/source/' + commit + '/'
   $scope.file_path_tokens = [{
     path: path_prefix,
