@@ -512,7 +512,7 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
       data: data,
     }).then(function(response) {
       $scope.formStatus = 'success'
-      $location.path('/classes/' + class_name + '/projects/' + $scope.project_name)
+      $location.path('/classes/' + class_name + '/projects/' + $scope.project_id)
     }, function(response) {
       $scope.formStatus = 'failure'
       Materialize.toast(response.data ? response.data.error : 'Error submitting form', 4000)
