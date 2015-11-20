@@ -297,6 +297,40 @@ app.controller('ClassCtrl', function($scope, $rootScope, $http, $localStorage, $
   $scope.removeTeacher = function(ind, key_name) {
     // TODO
   }
+
+  $scope.enrollStudent = function() {
+     Materialize.toast('enroll student ' + $scope.current_user)
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/classes/' + $scope.class.url_name + '/student/',
+      data: {
+        username: $scope.current_user
+      }
+    }).then(function(results) {
+      $scope.class.students.push($scope.current_user)
+    }, function(results) {
+      console.log(results.data)
+      Materialize.toast(results.data.error, 4000)
+    })
+    // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
+  }
+
+  $scope.addTeacher = function(teacher) {
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/classes/' + $scope.class.url_name + '/teacher/',
+      data: {
+        username: $scope.teacher
+      }
+    }).then(function(results) {
+      $scope.class.teachers.push($scope.teacher)
+      $scope.teacher = ''
+    }, function(results) {
+      console.log(results.data)
+      Materialize.toast(results.data.error, 4000)
+    })
+    // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
+  }
 })
 
 app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location, Consts) {
