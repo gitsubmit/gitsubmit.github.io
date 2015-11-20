@@ -774,6 +774,8 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, 
   var user_name = $routeParams.user_name,
       submission_name = $routeParams.submission_name
 
+  $scope.current_user = $localStorage.username
+
   $rootScope.root = {
     title: 'Submission'
   }

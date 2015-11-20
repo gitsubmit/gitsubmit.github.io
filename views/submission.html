@@ -26,9 +26,14 @@
     <p>Project Description: {{ project.description }}</p>
     <p>Project Due Date: {{ project.due }}</p>
   </div>
-  <div ng-show="admin &amp;&amp; status_class === 'ready' &amp;&amp; status_project === 'ready'" class="section">
-    <p>Git URL: <span><code>ssh://gitsubmit.com/{{ submission.gitolite_url }}</code></span></p>
+
+  <div ng-show="submission.contributors.indexOf(current_user) != -1">
+    <p><b>Clone this submission</b></p>
+    <p>
+      <pre class="clone-url-box-container"><span class="clone-url-box">git clone git@api.gitsubmit.com:/{{gitolite_url}}</span></pre>
+    </p>
     <hr/>
+    <h4>Repo Browser</h4>
     <div ng-include="'views/file_browser.html'"></div>
     <hr/>
     <!-- TODO: move this button to another place that makes more sense--><a class="btn waves-effect waves-light red lighten-1 white-text">delete this submission</a>
