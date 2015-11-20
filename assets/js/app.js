@@ -456,9 +456,7 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
 
   $scope.submitKey = function(isValid) {
     if (!isValid) return
-    var key_name = $scope.ssh_key_name
     var key_content = $scope.ssh_key_content
-    // alert('name: ' + key_name + ', content: ' + key_content)
     $http({
       method: 'POST',
       url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
