@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+LASTTESTSERVERPID=$(cat staging_pid) || true
+kill $LASTTESTSERVERPID
+
 set -e # exit with non-zero exit codes immediately
 if [ "$local_instance" = "yes" ]; then
     # this is on a server
