@@ -407,7 +407,7 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location,
   }
 })
 
-app.controller('ProjectCtrl', function($scope, $rootScope, $http, $localStorage, $routeParams, Consts) {
+app.controller('ProjectCtrl', function($scope, $rootScope, $http, $localStorage, $routeParams, $location, Consts) {
   var class_name = $routeParams.class_name
   var project_name = $routeParams.project_name
 
@@ -475,6 +475,8 @@ app.controller('ProjectCtrl', function($scope, $rootScope, $http, $localStorage,
   }
 
   $scope.class_name = class_name
+  $scope.file_url = $location.url() + '/source/master/'
+  $scope.embed = true
 })
 
 app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routeParams, $location, Consts) {
