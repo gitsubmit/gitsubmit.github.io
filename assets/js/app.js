@@ -58,6 +58,10 @@ app.config(function($routeProvider, $httpProvider) {
     templateUrl: 'views/submission.html',
     controller: 'ViewSubmissionCtrl'
   })
+  .when('/:user_name/submissions/:submission_name/source/:commit/:file_path*?', {
+    templateUrl: 'views/submission_file_browser.html',
+    controller: 'SubmissionFileBrowserCtrl'
+  })
   .otherwise({
     redirectTo: '/404'
   })
@@ -688,7 +692,7 @@ app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $locatio
   }
 })
 
-app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location, escapeHtml) {
+app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location, Consts, escapeHtml) {
   // NOTE: any scope that include this file browser scope should define
   // $scope.file_url as the url to get the file content.
   var file_url = $scope.file_url
@@ -697,7 +701,7 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location,
 
   $http({
     method: 'GET',
-    url: file_url
+    url: Consts.API_SERVER + file_url
   }).then(function(results) {
     $scope.file_browser_status = 'ready'
     $scope.file_type = results.headers('is_tree') === 'True' ? 'dir' : 'file'
@@ -723,7 +727,11 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location,
     } else if ($scope.file_type === 'dir') {
       var files = results.data.files
       for (var i = 0; i < files.length; i++) {
-        files[i].url = '/#' + $location.url() + ($location.url().endsWith('/') ? '' : '/') + files[i].name
+        if ($scope.embed) {
+          files[i].url = '/#' + $scope.file_url + ($scope.file_url.endsWith('/') ? '' : '/') + files[i].name
+        } else {
+          files[i].url = '/#' + $location.url() + ($location.url().endsWith('/') ? '' : '/') + files[i].name
+        }
       }
       $scope.files = files
     }
@@ -741,7 +749,7 @@ app.controller('ProjectFileBrowserCtrl', function($scope, $rootScope, $http, $ro
       file_path = $routeParams.file_path
 
   // export the file url to the child file browser scope
-  $scope.file_url = Consts.API_SERVER + $location.url()
+  $scope.file_url = $location.url()
 
   // parse file path into multiple clickable parts
   var tokens = []
@@ -805,6 +813,35 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, 
     }, error)
   }, error)
 
-  $scope.file_url = Consts.API_SERVER + $location.url() + '/source/master/'
+  $scope.file_url = $location.url() + '/source/master/'
+  $scope.embed = true
+})
+
+app.controller('SubmissionFileBrowserCtrl', function($scope, $rootScope, $http, $localStorage, $routeParams, $location, Consts) {
+    var user_name = $routeParams.user_name,
+      submission_name = $routeParams.submission_name,
+      commit = $routeParams.commit,
+      file_path = $routeParams.file_path
+
+  // export the file url to the child file browser scope
+  $scope.file_url = $location.url()
+
+  // parse file path into multiple clickable parts
+  var tokens = []
+  if (file_path) {
+    tokens = file_path.split('/').filter(function(token) { return token.length > 0 })
+  }
+  var path_prefix = '/#/' + user_name + '/submissions/' + submission_name + '/source/' + commit + '/'
+  $scope.file_path_tokens = [{
+    path: path_prefix,
+    name: submission_name 
+  }]
+
+  for (var i = 0; i < tokens.length; i++) {
+    $scope.file_path_tokens.push({
+      path: path_prefix + tokens.slice(0, i + 1).join('/'),
+      name: tokens[i]
+    })
+  }
 })
 

@@ -21,8 +21,8 @@
     <hr/>
     <p>Owner: {{ submission.owner }}</p>
     <p ng-show="submission.contributors.length &gt; 0">Contributors: {{ submission.contributors.join(', ') }}</p>
-    <p>Class: <a href="{{ '/#/classes/' + project_id }}">{{ class.long_name }}</a></p>
-    <p>Project: <a href="{{ '/#/classes/' + project_id + '/projects/' + project_id }}">{{ project.long_name }}</a></p>
+    <p>Class: <a href="{{ '/#/classes/' + class_id }}">{{ class.long_name }}</a></p>
+    <p>Project: <a href="{{ '/#/classes/' + class_id + '/projects/' + project_id }}">{{ project.long_name }}</a></p>
     <p>Project Description: {{ project.description }}</p>
     <p>Project Due Date: {{ project.due }}</p>
   </div>
