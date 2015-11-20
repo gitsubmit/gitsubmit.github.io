@@ -38,7 +38,7 @@
         <li class="collection-item" ng-show="!overdue_projects.length"><i>No overdue projects!</i></li>
         <li class="collection-item" ng-show="class.owner == current_user">
           <a href="#/classes/{{class.url_name}}/projects/create/">
-            <button class="waves-effect waves-light btn lighten-1 white-text">
+            <button class="waves-effect waves-light btn lighten-1 white-text blue">
               <i class="fa fa-plus-square material-icons left"></i>Create a new project
             </button>
           </a>
@@ -70,11 +70,19 @@
         </li>
         <li ng-show="!students.length"><i>No students currently enrolled!</i></li>
         <li class="collection-item" ng-show="class.students.indexOf(current_user) == -1 && current_user != class.owner">
-          <button class="waves-effect waves-light btn lighten-1 white-text" future-ng-click="newSubmission()">
+          <button class="waves-effect waves-light btn lighten-1 white-text blue" future-ng-click="newSubmission()">
             <i class="fa fa-plus-square material-icons left"></i>Enroll here
           </button>
         </li>
       </ul>
+    </div>
+
+    <div class="col s12">
+      <a href="">
+        <button class="waves-effect waves-light btn-large lighten-1 white-text blue" future-ng-click="newSubmission()">
+          <i class="fa fa-pencil-square-o material-icons left"></i>Edit this class
+        </button>
+      </a>
     </div>
   </div>
 </div>
