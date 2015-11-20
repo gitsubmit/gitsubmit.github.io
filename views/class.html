@@ -50,13 +50,15 @@
         <li class="collection-header collection-header-accent">
           <h5>Teachers</h5>
         </li>
-        <li ng-repeat="teacher in teachers" class="collection-item">
-          {{teacher}} <a href="#"><i class="mdi-content-clear secondary-content" ng-click="removeTeacher($index, key.key_name)"></i></a>
+        <li ng-repeat="teacher in class.teachers" class="collection-item">
+          {{teacher}} <!--<a href="#"><i class="mdi-content-clear secondary-content" ng-click="removeTeacher($index, key.key_name)"></i></a>-->
         </li>
         <li class="collection-item">
           <div class="input-field">
-            <input placeholder="Press enter to add..." id="add_teacher" type="text">
-            <label for="add_teacher" class="active">Add teacher</label>
+            <form ng-submit="addTeacher()" name="add_teacher_form">
+              <input ng-model="teacher" placeholder="Press enter to add..." id="add_teacher" type="text">
+              <label for="add_teacher" class="active">Add teacher</label>
+            </form>
           </div>
         </li>
       </ul>
@@ -65,12 +67,12 @@
         <li class="collection-header collection-header-accent">
           <h5>Students</h5>
         </li>
-        <li ng-repeat="student in students" class="collection-item">
-          {{student}} <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
+        <li ng-repeat="student in class.students" class="collection-item">
+          {{student}} <!--<a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>-->
         </li>
-        <li ng-show="!students.length"><i>No students currently enrolled!</i></li>
+        <li ng-show="!class.students.length"><i>No students currently enrolled!</i></li>
         <li class="collection-item" ng-show="class.students.indexOf(current_user) == -1 && current_user != class.owner">
-          <button class="waves-effect waves-light btn lighten-1 white-text" future-ng-click="newSubmission()">
+          <button class="waves-effect waves-light btn lighten-1 white-text" ng-click="enrollStudent()">
             <i class="fa fa-plus-square material-icons left"></i>Enroll here
           </button>
         </li>
