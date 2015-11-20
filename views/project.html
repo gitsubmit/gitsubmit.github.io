@@ -8,7 +8,7 @@
     <p>This project is a part of the class: <a href="#/classes/{{parent}}">{{class_name}}</a></p>
     <p>This project is due on: {{project.due}}</p>
     <button ng-class="{'disabled': submission_status == 'submitting' }"
-            class="waves-effect waves-light btn lighten-1 white-text" ng-click="newSubmission()">
+            class="waves-effect waves-light btn blue lighten-1 white-text" ng-click="newSubmission()">
       <i class="fa fa-code-fork material-icons left"></i>{{submission_button_text}}
     </button>
     <div ng-show="project.owner == current_user">

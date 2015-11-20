@@ -20,4 +20,9 @@
   <ul ng-show="file_browser_status === 'ready' && file_type === 'dir'" ng-repeat="file in files">
     <li><a href="{{ file.url }}">{{ file.name }}<span ng-show="file.type === 'dir'">/</span></a></li>
   </ul>
+  <p ng-show="files.length === 0">
+    <i>
+      This repository is currently empty.
+    </i>
+  </p>
 </div>
