@@ -184,10 +184,12 @@
               <input
                 id="ssh_key_submit"
                 type="submit"
-                value="Save"
-                class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
-                ng-class="{'disabled': ssh_key_form.ssh_key_content.$invalid,
-                           'blue': ssh_key_form.ssh_key_content.$valid}"
+                value="{{key_button_text}}"
+                class="btn center-on-small-only right waves-effect waves-light lighten-1 white-text"
+                ng-class="{'disabled': ssh_key_form.ssh_key_content.$invalid || submit_key_status == 'submitting',
+                           'blue': ssh_key_form.ssh_key_content.$valid && submit_key_status == 'ready',
+                           'red': submit_key_status == 'error'}"
+                ng-disabled="submit_key_status == 'submitting'"
                 ng-click="submitKey(ssh_key_form.ssh_key_content.$valid)"
                 >
             </div>
