@@ -12,13 +12,14 @@
       <i class="fa fa-code-fork material-icons left"></i>{{submission_button_text}}
     </button>
     <div ng-show="project.owner == current_user">
-      <p><b>Clone this project</b></p>
-      <p>
-        <pre class="clone-url-box-container"><span class="clone-url-box">git clone git@api.gitsubmit.com/{{gitolite_url}}</span></pre>
-      </p>
+    <p><b>Clone this project</b></p>
+    <p>
+      <pre class="clone-url-box-container"><span class="clone-url-box">git clone git@api.gitsubmit.com:/{{gitolite_url}}</span></pre>
+    </p>
     </div>
   </div>
   <div class="section">
+    <h4>Repo Browser</h4>
     <hr>
     <div ng-include="'views/file_browser.html'"></div>
     <hr>
