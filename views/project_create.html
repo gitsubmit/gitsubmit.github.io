@@ -1,6 +1,8 @@
 <div class="container">
-  <div class="spacer200"></div>
-  <h2 class="light">Create a New Project</h2>
+  <div class="spacer50"></div>
+  <h2>Create a New Project</h2>
+  <hr>
+  <div class="spacer50"></div>
   <div class="row">
     <form class="col s12" name="project_create_form">
       <div class="row">
@@ -80,8 +82,9 @@
             class="waves-effect waves-light btn lighten-1 white-text"
             ng-click="formSubmit(project_create_form.project_name.$valid && project_create_form.project_id.$valid)"
             ng-class="{'disabled': formStatus === 'submitting' || project_create_form.project_name.$invalid || project_create_form.project_id.$invalid,
-              'green': formStatus === 'ready' && project_create_form.project_name.$valid && project_create_form.project_id.$valid,
-              'red': formStatus === 'failure'}">
+              'blue': formStatus === 'ready' && project_create_form.project_name.$valid && project_create_form.project_id.$valid,
+              'red': formStatus === 'failure',
+              'green': formStatus === 'success'}">
         </div>
       </div>
     </form>

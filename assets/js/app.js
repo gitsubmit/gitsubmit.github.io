@@ -337,6 +337,7 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
 
   $scope.formSubmit = function(isValid) {
     if (!isValid) return
+    if ($scope.formStatus === 'submitting') return
 
     // Note that the date picker doesn't work like regular inputs
     // so ng-required/model/$invalid don't work. We need to
@@ -391,12 +392,11 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
       url: Consts.API_SERVER + '/classes/' + class_name + '/projects/',
       data: data,
     }).then(function(response) {
-      // TODO: redirect to /classes/<class>/projects/<project>
-      $scope.formStatus = 'ready'
+      $scope.formStatus = 'success'
       $location.path('/classes/' + class_name + '/projects/' + $scope.project_name)
     }, function(response) {
       $scope.formStatus = 'failure'
-      Materialize.toast(response.data.error, 4000)
+      Materialize.toast(response.data ? response.data.error : 'Error submitting form', 4000)
     })
 
   }
