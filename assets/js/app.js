@@ -168,6 +168,11 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage, $http, Co
   var token = $localStorage.token
   $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
 
+
+  if($rootScope.isLoggedIn) {
+    $rootScope.current_user = $localStorage.username
+  }
+
   $http({
     method: 'GET',
     url: Consts.API_SERVER + '/' + $localStorage.username + '/landing/'
@@ -535,6 +540,9 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
     title: 'Account Settings'
   }
 
+  $scope.submit_key_status = 'ready'
+  $scope.key_button_text = 'Add Key'
+
   $scope.getKeys = function() {
     $http({
       method: 'GET',
@@ -574,6 +582,9 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
   }
 
   $scope.submitKey = function(isValid) {
+
+    $scope.submit_key_status = 'submitting'
+    $scope.key_button_text = 'Verifying and submitting key...'
     if (!isValid) return
     var key_content = $scope.ssh_key_content
     $http({
@@ -583,15 +594,15 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
         pkey_contents: key_content
       }
     }).then(function(results) {
-      $('#ssh_key_submit').removeClass('disabled blue red green').addClass('green')
+      $scope.submit_key_status = 'ready'
+      $scope.key_button_text = 'Key added! Add another?'
       $scope.getKeys()  // refresh the key list
-      $('#ssh_key_submit_status').html('Success!')
       setTimeout(function() {
         $('#add_ssh_key').closeModal()
       }, 2000)
     }, function(results) {
-      $('#ssh_key_submit').removeClass('disabled blue red green').addClass('red')
-      $('#ssh_key_submit_status').html(results.data.error)
+      $scope.key_button_text = 'Could not add key. Try again?'
+      $scope.submit_key_status = 'error'
       Materialize.toast(results.data.error, 4000)
     })
   }
