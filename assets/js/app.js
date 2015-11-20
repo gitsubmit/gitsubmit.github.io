@@ -120,7 +120,11 @@ app.factory('cachedGet', function($http, $localStorage, Consts) {
   }
 })
 
-app.run(function($rootScope, $location, $http, Consts, cachedGet) {
+app.run(function($rootScope, $location, $http, $localStorage, Consts, cachedGet) {
+  // show menu items according to whether user is logged in or not
+  var token = $localStorage.token
+  $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
+
   // index.html JavaScript setup code
   $(document).ready(function() {
     // Detect touch screen and enable scrollbar if necessary
@@ -160,8 +164,8 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage) {
     title: 'Home | GitSubmit'
   }
 
+  // refresh menu items when user is redirected to / after logging in/out
   var token = $localStorage.token
-
   $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
 
   $scope.classes = [
