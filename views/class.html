@@ -36,6 +36,13 @@
           <br>{{project.due}}
         </li>
         <li class="collection-item" ng-show="!overdue_projects.length"><i>No overdue projects!</i></li>
+        <li class="collection-item" ng-show="class.owner == current_user">
+          <a href="#/classes/{{class.url_name}}/projects/create/">
+            <button class="waves-effect waves-light btn lighten-1 white-text">
+              <i class="fa fa-plus-square material-icons left"></i>Create a new project
+            </button>
+          </a>
+        </li>
       </ul>
     </div>
     <div class="col m4 s12">
@@ -49,7 +56,7 @@
         <li class="collection-item">
           <div class="input-field">
             <input placeholder="Press enter to add..." id="add_teacher" type="text">
-            <label for="add_student" class="active">Add teacher</label>
+            <label for="add_teacher" class="active">Add teacher</label>
           </div>
         </li>
       </ul>
@@ -62,7 +69,7 @@
           {{student}} <a href="#"><i class="mdi-content-clear secondary-content" future-ng-click="removeStudent($index, key.key_name)"></i></a>
         </li>
         <li ng-show="!students.length"><i>No students currently enrolled!</i></li>
-        <li class="collection-item">
+        <li class="collection-item" ng-show="class.students.indexOf(current_user) == -1 && current_user != class.owner">
           <button class="waves-effect waves-light btn lighten-1 white-text" future-ng-click="newSubmission()">
             <i class="fa fa-plus-square material-icons left"></i>Enroll here
           </button>
