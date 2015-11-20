@@ -329,6 +329,40 @@ app.controller('ClassCtrl', function($scope, $rootScope, $http, $localStorage, $
   $scope.removeTeacher = function(ind, key_name) {
     // TODO
   }
+
+  $scope.enrollStudent = function() {
+     Materialize.toast('enroll student ' + $scope.current_user)
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/classes/' + $scope.class.url_name + '/student/',
+      data: {
+        username: $scope.current_user
+      }
+    }).then(function(results) {
+      $scope.class.students.push($scope.current_user)
+    }, function(results) {
+      console.log(results.data)
+      Materialize.toast(results.data.error, 4000)
+    })
+    // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
+  }
+
+  $scope.addTeacher = function(teacher) {
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/classes/' + $scope.class.url_name + '/teacher/',
+      data: {
+        username: $scope.teacher
+      }
+    }).then(function(results) {
+      $scope.class.teachers.push($scope.teacher)
+      $scope.teacher = ''
+    }, function(results) {
+      console.log(results.data)
+      Materialize.toast(results.data.error, 4000)
+    })
+    // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
+  }
 })
 
 app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location, Consts) {
@@ -365,9 +399,14 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location,
   }
 })
 
-app.controller('ProjectCtrl', function($scope, $rootScope, $http, $routeParams, Consts) {
+app.controller('ProjectCtrl', function($scope, $rootScope, $http, $localStorage, $routeParams, Consts) {
   var class_name = $routeParams.class_name
   var project_name = $routeParams.project_name
+
+  $scope.current_user = $localStorage.username
+
+  $scope.submission_status = 'ready'
+  $scope.submission_button_text = "Create a new submission"
 
   $rootScope.root = {
     title: 'Project ' + project_name + ' | GitSubmit'
@@ -402,6 +441,30 @@ app.controller('ProjectCtrl', function($scope, $rootScope, $http, $routeParams, 
     //$scope.class_list_status = 'ready'
     Materialize.toast(res.data.error || 'Error getting class', 4000)
   })
+
+  $scope.newSubmission = function() {
+    Materialize.toast("new sub for " + $scope.current_user + ": "+Consts.API_SERVER + '/classes/' + $scope.parent + '/projects/' + $scope.project.url_name + "/make_submission/" || 'Error creating submission', 4000)
+
+    $scope.submission_status = 'submitting'
+    $scope.submission_button_text = "Creating a new submission..."
+
+    $http({
+      method: 'POST',
+      url: Consts.API_SERVER + '/classes/' + $scope.parent + '/projects/' + $scope.project.url_name + "/make_submission/",
+      data: {
+        owner: $scope.current_user
+      }
+    }).then(function(results) {
+      Materialize.toast("SUB CREATED YES " + $scope.current_user || 'Error creating submission', 4000)
+      $scope.submission_status = 'success'
+      $scope.submission_button_text = "Create a new submission"
+    }, function(results) {
+      console.log(results.data)
+      Materialize.toast(results.data.error, 4000)
+      $scope.submission_status = 'error'
+      $scope.submission_button_text = "Create a new submission"
+    })
+  }
 
   $scope.class_name = class_name
 })
