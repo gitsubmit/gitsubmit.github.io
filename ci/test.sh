@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-LASTTESTSERVERPID=$(cat staging_pid) || true
+LASTTESTSERVERPID=$(cat frontend_staging_pid) || true
 kill $LASTTESTSERVERPID
 
 set -e # exit with non-zero exit codes immediately
