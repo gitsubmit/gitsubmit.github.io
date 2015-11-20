@@ -168,13 +168,40 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage, $http, Co
   var token = $localStorage.token
   $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
 
+  var today_date = new Date()
+
   $http({
     method: 'GET',
     url: Consts.API_SERVER + '/' + $localStorage.username + '/landing/'
   }).then(function(res) {
+    var projects = res.data.projects
+    projects.sort(function(a, b) {
+      if (a.due < b.due) {
+        return -1
+      }
+      if (a.due > b.due) {
+        return 1
+      }
+      return 0
+    })
+    for (var i = 0; i < projects.length; i++) {
+      var due = projects[i].due
+      var due_fields = due.split('-')
+      var due_date = new Date()
+      due_date.setFullYear(due_fields[0])
+      due_date.setMonth(parseInt(due_fields[1]) - 1)
+      due_date.setDate(due_fields[2])
+
+      var diff_days = parseInt((due_date.getTime() - today_date.getTime()) / (1000 * 60 * 60 * 24))
+      if (diff_days <= 7) {   // don't show if the due date is more than 7 days away
+        projects[i].diff_days = diff_days
+      }
+    }
+
     $scope.classes = res.data.classes
-    $scope.projects = res.data.projects
+    $scope.projects = projects
     $scope.submissions = res.data.submissions
+
   }, function(res) {
     Materialize.toast(res.data ? res.data.error : 'Error loading', 4000)
   })
