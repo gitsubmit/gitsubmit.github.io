@@ -258,17 +258,46 @@ app.controller('ClassListCtrl', function($scope, $rootScope, $http, Consts) {
   })
 })
 
-app.controller('ClassCtrl', ['$scope', '$rootScope', '$routeParams', function($scope, $rootScope, $routeParams) {
+app.controller('ClassCtrl', function($scope, $rootScope, $http, $routeParams, Consts) {
   var class_name = $routeParams.class_name
-
-  // TODO: Make an API call to backend here
 
   $rootScope.root = {
     title: 'Class ' + class_name + ' | GitSubmit'
   }
 
+  $scope.status = 'loading'
+
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/classes/' + class_name + "/"
+  }).then(function(res) {
+    $scope.class = res.data.class
+    $scope.status = 'ready'
+  }, function(res) {
+    Materialize.toast(res.data ? res.data.error : 'Error getting class', 4000)
+  })
+
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/classes/' + class_name + "/projects/"
+  }).then(function(res) {
+    $scope.projects = res.data.projects
+    $scope.overdue_projects = res.data.overdue_projects
+    $scope.status = 'ready'
+
+    //Materialize.toast(res.data.projects || 'um', 4000)
+    //$scope.class_list_status = 'ready'
+    //$scope.classes = res.data.classes
+  }, function(res) {
+    Materialize.toast(res.data ? res.data.error : 'Error getting class', 4000)
+  })
+
   $scope.class_name = class_name
-}])
+
+  $scope.removeTeacher = function(ind, key_name) {
+    // TODO
+  }
+})
 
 app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location, Consts) {
   $rootScope.root = {
@@ -303,6 +332,47 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location,
       Materialize.toast(response.data.error, 4000)
     })
   }
+})
+
+app.controller('ProjectCtrl', function($scope, $rootScope, $http, $routeParams, Consts) {
+  var class_name = $routeParams.class_name
+  var project_name = $routeParams.project_name
+
+  $rootScope.root = {
+    title: 'Project ' + project_name + ' | GitSubmit'
+  }
+
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/classes/' + class_name + "/projects/" + project_name + "/"
+  }).then(function(res) {
+    $scope.project_description = res.data.project.description
+    $scope.project_owner = res.data.project.owner
+    $scope.project = res.data.project
+    $scope.parent = res.data.project.parent
+    $scope.url_name = res.data.project.url_name
+    $scope.gitolite_url = res.data.project.gitolite_url
+  }, function(res) {
+    Materialize.toast(res.data.error || 'Error getting project', 4000)
+  })
+
+
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/classes/' + class_name + "/projects/"
+  }).then(function(res) {
+    $scope.projects = res.data.projects
+    $scope.overdue_projects = res.data.overdue_projects
+
+    //Materialize.toast(res.data.projects || 'um', 4000)
+    //$scope.class_list_status = 'ready'
+    //$scope.classes = res.data.classes
+  }, function(res) {
+    //$scope.class_list_status = 'ready'
+    Materialize.toast(res.data.error || 'Error getting class', 4000)
+  })
+
+  $scope.class_name = class_name
 })
 
 app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routeParams, $location, Consts) {
