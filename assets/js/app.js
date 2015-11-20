@@ -166,7 +166,6 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage, $http, Co
   }
 
   var token = $localStorage.token
-
   $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
 
   $http({
@@ -258,7 +257,7 @@ app.controller('ClassListCtrl', function($scope, $rootScope, $http, Consts) {
   })
 })
 
-app.controller('ClassCtrl', function($scope, $rootScope, $http, $routeParams, Consts) {
+app.controller('ClassCtrl', function($scope, $rootScope, $http, $localStorage, $routeParams, Consts) {
   var class_name = $routeParams.class_name
 
   $rootScope.root = {
@@ -266,6 +265,7 @@ app.controller('ClassCtrl', function($scope, $rootScope, $http, $routeParams, Co
   }
 
   $scope.status = 'loading'
+  $scope.current_user = $localStorage.username
 
   $http({
     method: 'GET',
