@@ -16,13 +16,8 @@ app.config(function($routeProvider, $httpProvider) {
     controller: 'AboutCtrl'
   })
   .when('/login', {
-    templateUrl: 'login.html',
+    templateUrl: 'views/login.html',
     controller: 'LoginCtrl'
-    //controller: 'FormLoginCtrl'
-  })
-  .when('/signup', {
-    templateUrl: 'signup.html',
-    controller: 'SignupCtrl'
   })
   .when('/404', {
     templateUrl: 'views/404.html',
@@ -222,8 +217,11 @@ app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, $
     title: 'Login | GitSubmit'
   }
 
+  $scope.status = 'ready'
+
   $scope.submit = function() {
-    // alert($scope.username + ' ' + $scope.password)
+    if ($scope.status === 'loading') return // avoid sending multiple requests at once
+    $scope.status = 'loading'
     $http({
       method: 'POST',
       url: Consts.API_SERVER + '/login/',
@@ -232,11 +230,13 @@ app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, $
         password: $scope.password
       }
     }).then(function(results) {
+      $scope.status = 'success'
       $localStorage.token = results.data.token
       $localStorage.username = $scope.username
       $location.path('/')
     }, function(results) {
-      $scope.login_status = results.data.error
+      $scope.status = 'failed'
+      Materialize.toast(results.data ? results.data.error : 'Error logging in', 4000)
     })
   }
 })
@@ -505,8 +505,10 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
 })
 
 app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $location, $route, Consts) {
+  $scope.status = 'ready'
   $scope.submit = function() {
-    // alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
+    if ($scope.status === 'loading') return // avoid sending multiple requests at once
+    $scope.status = 'loading'
     $http({
       method: 'POST',
       url: Consts.API_SERVER + '/signup/',
@@ -516,12 +518,14 @@ app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $locatio
         email: $scope.email
       }
     }).then(function(results) {
+      $scope.status = 'success'
       $localStorage.token = results.data.token
       $localStorage.username = $scope.username
       $scope.signup_status = 'Success!'
       $route.reload()
     }, function(results) {
-      $scope.signup_status = results.data.error
+      $scope.status = 'failed'
+      Materialize.toast(results.data ? results.data.error : 'Error signing up', 4000)
     })
   }
 })

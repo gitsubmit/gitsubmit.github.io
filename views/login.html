@@ -1,9 +1,11 @@
 <div class="container">
-    <div class="spacer100"></div>
-    <h1>Login!</h1>
+    <div class="spacer50"></div>
+    <h3>Login!</h3>
+    <hr/>
+    <div class="spacer50"></div>
     <form class="col s12" name="login">
       <div class="row">
-        <div class="input-field col s12 m6 l6">
+        <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
           <input
             type="text"
             id="username"
@@ -15,7 +17,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s12 m6 l6">
+        <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
           <input
             type="password"
             id="password"
@@ -32,11 +34,15 @@
             type="submit"
             value="Submit"
             class="waves-effect waves-light btn lighten-1 white-text"
-            ng-click="submit()">
+            ng-click="submit()"
+            ng-class="{
+              'disabled': status === 'loading',
+              'blue': status === 'ready',
+              'red': status === 'failed',
+              'green': status === 'success'
+            }"
+            >
         </div>
-      </div>
-      <div class="row">
-        <p>{{ login_status }}</p>
       </div>
     </form>
 </div>
