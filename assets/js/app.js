@@ -299,6 +299,7 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location,
 
   $scope.formSubmit = function(isValid) {
     if (!isValid) return
+    if ($scope.formStatus === 'submitting') return
 
     $scope.formStatus = 'submitting'
 
@@ -311,15 +312,13 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location,
         description: $scope.class_description,
       }
     }).then(function(response) {
-      // success
-      $scope.formStatus = 'ready'
+      $scope.formStatus = 'success'
       var new_path = '/classes/' + $scope.class_id
       console.log(new_path)
       $location.path(new_path)
     }, function(response) {
-      // error
       $scope.formStatus = 'failure'
-      Materialize.toast(response.data.error, 4000)
+      Materialize.toast(response.data ? response.data.error : 'Error submitting form', 4000)
     })
   }
 })
