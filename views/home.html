@@ -50,7 +50,7 @@
         <ul ng-repeat="submission in submissions">
           <li>
             <h5>
-              <a href="/#/{{ submission.owner }}/submissions/{{ submission.long_name }}">{{ submission.long_name }}</a>
+              <a href="/#/{{ submission.gitolite_url }}">{{ submission.long_name }}</a>
             </h5>
             <p ng-show="submission.contributors.length > 0">Contributors: {{ submission.contributors.join(', ') }}</p>
             <p ng-show="submission.parent">Project: <a href="/#/classes/{{ submission.parent.split('/')[0] }}/projects/{{ submission.parent.split('/')[1] }}">{{ submission.parent.split('/')[1] }}</a></p>
