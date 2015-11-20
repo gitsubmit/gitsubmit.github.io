@@ -52,6 +52,7 @@ h1, h2, h3, h4, h5, h6 {
 .clone-url-box {
   padding: 5px;
   background-color: #ddd;
+}
 
 /* SSH key content should be monospaced */
 textarea#ssh_key_content {
@@ -59,7 +60,7 @@ textarea#ssh_key_content {
 }
 
 pre.line-numbers {
-  border: 1px solid gray;
+  border: 1px solid lightgray;
 }
 
 .preloader-wrapper.active {

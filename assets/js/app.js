@@ -16,13 +16,8 @@ app.config(function($routeProvider, $httpProvider) {
     controller: 'AboutCtrl'
   })
   .when('/login', {
-    templateUrl: 'login.html',
+    templateUrl: 'views/login.html',
     controller: 'LoginCtrl'
-    //controller: 'FormLoginCtrl'
-  })
-  .when('/signup', {
-    templateUrl: 'signup.html',
-    controller: 'SignupCtrl'
   })
   .when('/404', {
     templateUrl: 'views/404.html',
@@ -125,7 +120,11 @@ app.factory('cachedGet', function($http, $localStorage, Consts) {
   }
 })
 
-app.run(function($rootScope, $location, $http, Consts, cachedGet) {
+app.run(function($rootScope, $location, $http, $localStorage, Consts, cachedGet) {
+  // show menu items according to whether user is logged in or not
+  var token = $localStorage.token
+  $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
+
   // index.html JavaScript setup code
   $(document).ready(function() {
     // Detect touch screen and enable scrollbar if necessary
@@ -165,6 +164,7 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage, $http, Co
     title: 'Home | GitSubmit'
   }
 
+  // refresh menu items when user is redirected to / after logging in/out
   var token = $localStorage.token
   $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
 
@@ -206,8 +206,11 @@ app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, $
     title: 'Login | GitSubmit'
   }
 
+  $scope.status = 'ready'
+
   $scope.submit = function() {
-    // alert($scope.username + ' ' + $scope.password)
+    if ($scope.status === 'loading') return // avoid sending multiple requests at once
+    $scope.status = 'loading'
     $http({
       method: 'POST',
       url: Consts.API_SERVER + '/login/',
@@ -216,11 +219,13 @@ app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, $
         password: $scope.password
       }
     }).then(function(results) {
+      $scope.status = 'success'
       $localStorage.token = results.data.token
       $localStorage.username = $scope.username
       $location.path('/')
     }, function(results) {
-      $scope.login_status = results.data.error
+      $scope.status = 'failed'
+      Materialize.toast(results.data ? results.data.error : 'Error logging in', 4000)
     })
   }
 })
@@ -309,6 +314,7 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location,
 
   $scope.formSubmit = function(isValid) {
     if (!isValid) return
+    if ($scope.formStatus === 'submitting') return
 
     $scope.formStatus = 'submitting'
 
@@ -321,15 +327,13 @@ app.controller('ClassCreateCtrl', function($scope, $rootScope, $http, $location,
         description: $scope.class_description,
       }
     }).then(function(response) {
-      // success
-      $scope.formStatus = 'ready'
+      $scope.formStatus = 'success'
       var new_path = '/classes/' + $scope.class_id
       console.log(new_path)
       $location.path(new_path)
     }, function(response) {
-      // error
       $scope.formStatus = 'failure'
-      Materialize.toast(response.data.error, 4000)
+      Materialize.toast(response.data ? response.data.error : 'Error submitting form', 4000)
     })
   }
 })
@@ -389,6 +393,7 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
 
   $scope.formSubmit = function(isValid) {
     if (!isValid) return
+    if ($scope.formStatus === 'submitting') return
 
     // Note that the date picker doesn't work like regular inputs
     // so ng-required/model/$invalid don't work. We need to
@@ -443,12 +448,11 @@ app.controller('ProjectCreateCtrl', function($scope, $rootScope, $http, $routePa
       url: Consts.API_SERVER + '/classes/' + class_name + '/projects/',
       data: data,
     }).then(function(response) {
-      // TODO: redirect to /classes/<class>/projects/<project>
-      $scope.formStatus = 'ready'
+      $scope.formStatus = 'success'
       $location.path('/classes/' + class_name + '/projects/' + $scope.project_name)
     }, function(response) {
       $scope.formStatus = 'failure'
-      Materialize.toast(response.data.error, 4000)
+      Materialize.toast(response.data ? response.data.error : 'Error submitting form', 4000)
     })
 
   }
@@ -508,9 +512,7 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
 
   $scope.submitKey = function(isValid) {
     if (!isValid) return
-    var key_name = $scope.ssh_key_name
     var key_content = $scope.ssh_key_content
-    // alert('name: ' + key_name + ', content: ' + key_content)
     $http({
       method: 'POST',
       url: Consts.API_SERVER + '/' + $localStorage.username + '/ssh_keys/',
@@ -560,8 +562,10 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
 })
 
 app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $location, $route, Consts) {
+  $scope.status = 'ready'
   $scope.submit = function() {
-    // alert($scope.email + ' ' + $scope.username + ' ' + $scope.password)
+    if ($scope.status === 'loading') return // avoid sending multiple requests at once
+    $scope.status = 'loading'
     $http({
       method: 'POST',
       url: Consts.API_SERVER + '/signup/',
@@ -571,12 +575,14 @@ app.controller('SignupFormCtrl', function($scope, $http, $localStorage, $locatio
         email: $scope.email
       }
     }).then(function(results) {
+      $scope.status = 'success'
       $localStorage.token = results.data.token
       $localStorage.username = $scope.username
       $scope.signup_status = 'Success!'
       $route.reload()
     }, function(results) {
-      $scope.signup_status = results.data.error
+      $scope.status = 'failed'
+      Materialize.toast(results.data ? results.data.error : 'Error signing up', 4000)
     })
   }
 })

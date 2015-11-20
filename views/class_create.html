@@ -1,6 +1,8 @@
 <div class="container">
-  <div class="spacer200"></div>
-  <h2>Create a New Class</h2>
+  <div class="spacer50"></div>
+  <h3>Create a New Class</h3>
+  <hr>
+  <div class="spacer50"></div>
   <div class="row">
     <form class="col s12" name="class_create_form">
       <div class="row">
@@ -41,8 +43,9 @@
             class="waves-effect waves-light btn lighten-1 white-text"
             ng-click="formSubmit(class_create_form.class_name.$valid && class_create_form.class_id.$valid)"
             ng-class="{'disabled': formStatus === 'submitting' || class_create_form.class_name.$invalid || class_create_form.class_id.$invalid,
-              'green': formStatus === 'ready' && class_create_form.class_name.$valid && class_create_form.class_id.$valid,
-              'red': formStatus === 'failure'}">
+              'blue': formStatus === 'ready' && class_create_form.class_name.$valid && class_create_form.class_id.$valid,
+              'red': formStatus === 'failure',
+              'green': formStatus === 'success'}">
         </div>
       </div>
     </form>

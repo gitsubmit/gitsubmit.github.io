@@ -1,5 +1,7 @@
 <div class="container">
   <div class="spacer50"></div>
+  <h3>Account Settings</h3>
+  <hr>
   <div class="row">
     <div class="col s12">
       <ul class="tabs">
@@ -15,10 +17,12 @@
       </ul>
     </div>
     <div id="information" class="col s12 m12 l12">
-      <form class="row" name="changeName">
+      <div class="spacer20"></div>
+      <form name="changeName">
         <h5>Change Name</h5>
+        <p>Change your display name.</p>
         <div class="row">
-          <div class="input-field col s24 m6 l6">
+          <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
               <input
                 type="text"
                 id="name"
@@ -29,19 +33,21 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s12 m12 l12">
+          <div class="col s12 m6 l6 offset-m3 offset-l3">
             <input
               type="submit"
-              value="Change Name"
-              class="blue waves-effect waves-light btn lighten-1 white-text"
+              value="Save"
+              class="center-on-small-only right blue waves-effect waves-light btn lighten-1 white-text"
               ng-click="change_name()">
           </div>
         </div>
       </form>
-      <form class="row" name="changeEmail">
+      <div class="spacer20"></div>
+      <form name="changeEmail">
         <h5>Change Email</h5>
+        <p>Change your associated email address.</p>
         <div class="row">
-          <div class="input-field col s24 m6 l6">
+          <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
               <input
                 type="email"
                 id="email"
@@ -52,19 +58,21 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s12 m12 l12">
+          <div class="col s12 m6 l6 offset-m3 offset-l3">
             <input
               type="submit"
-              value="Change Email"
-              class="blue waves-effect waves-light btn lighten-1 white-text"
+              value="Save"
+              class="center-on-small-only right blue waves-effect waves-light btn lighten-1 white-text"
               ng-click="change_email()">
           </div>
         </div>
       </form>
+      <div class="spacer20"></div>
       <div class="row">
         <h5>Logout</h5>
+        <p>Log out of your account.</p>
         <div class="row">
-          <div class="col s12 m12 l12">
+          <div class="col s12 m2 l2 offset-m5 offset-l5">
             <a
               href=""
               class="blue waves-effect waves-light btn lighten-1 white-text"
@@ -75,13 +83,14 @@
       </div>
     </div>
     <div id="settings" class="col s12 m12 l12">
+      <div class="spacer20"></div>
       <h5>Change Your Password</h5>
       <p>
         Passwords must have at least 8 characters.
       </p>
-      <form class="col s12" name="password_form">
+      <form name="password_form">
         <div class="row">
-          <div class="input-field col s12 m6 l5 offset-l1">
+          <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
             <input
               type="password"
               id="password"
@@ -95,7 +104,9 @@
               >
             <label for="password">Password</label>
           </div>
-          <div class="input-field col s12 m6 l5">
+        </div>
+        <div class="row">
+          <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
             <input
               type="password"
               id="password_confirm"
@@ -111,7 +122,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="input-field col s12 m6 l5 offset-l1">
+          <div class="input-field col s12 m6 l6 offset-m3 offset-l3">
             <input
               type="password"
               id="password_current"
@@ -123,7 +134,9 @@
               >
             <label for="password_current">Current Password</label>
           </div>
-          <div class="col s12 m6 l5">
+        </div>
+        <div class="row">
+          <div class="col s12 m6 l6 offset-m3 offset-l3">
             <input
               type="submit"
               class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
@@ -135,15 +148,13 @@
         </div>
       </form>
       <div class="spacer30"></div>
-      <hr>
-      <div class="spacer30"></div>
       <h5>Manage Your SSH Keys</h5>
       <div ng-repeat="key in keys">
         <!-- for documentation on ng-repeat: https://docs.angularjs.org/api/ng/directive/ngRepeat -->
         <div class="row">
           <!-- <div class="col truncate s11 m4 l3 offset-l1">{{key.key_name}}</div> -->
           <!-- <div class="col truncate m7 l6 hide-on-small-only">{{key.key_contents}}</div> -->
-          <div class="col truncate m7 l7 offset-m2 offset-l2">{{ key }}</div>
+          <div class="col truncate s1 m7 l7 offset-m2 offset-l2">{{ key }}</div>
           <div class="col s1 m1 l1">
             <a>
               <i class="mdi-content-clear" ng-click="deleteKey($index, key.key_name)"></i>
@@ -152,70 +163,36 @@
         </div>
       </div>
       <div class="row">
-        <div class="col s12 m12 l10">
-          <a class="center-on-small-only right waves-effect waves-light blue btn lighten-1 white-text modal-trigger" href="#add_ssh_key">
-            Add SSH Key
-          </a>
-        </div>
-      </div>
-      <div id="add_ssh_key" class="modal">
-        <div class="modal-content">
-          <form class="col s12" name="ssh_key_form">
-            <div class="row">
-              <!-- <div class="input-field">
-                <input
-                  type="text"
-                  id="ssh_key_name"
-                  name="ssh_key_name"
-                  value="ssh_key_name"
-                  ng-model="ssh_key_name"
-                  ng-class="{'invalid': ssh_key_form.ssh_key_name.$invalid && ssh_key_form.ssh_key_name.$touched}"
-                  ng-required="true"
-                  >
-                <label for="ssh_key_name" class="active">Name</label>
-              </div> -->
-              <div class="input-field">
-                <textarea
-                  id="ssh_key_content"
-                  class="materialize-textarea"
-                  name="ssh_key_content"
-                  ng-model="ssh_key_content"
-                  ng-class="{'invalid': ssh_key_form.ssh_key_content.$invalid && ssh_key_form.ssh_key_content.$touched}"
-                  ng-minlength="1"
-                  required="true"
-                  ng-required="true"
-                ></textarea>
-                <label for="ssh_key_content">Key</label>
-              </div>
+        <form class="col s12 " name="ssh_key_form">
+          <div class="row">
+            <div class="input-field col s10 m6 l6 offset-m3 offset-l3">
+              <textarea
+                id="ssh_key_content"
+                class="materialize-textarea"
+                name="ssh_key_content"
+                ng-model="ssh_key_content"
+                ng-class="{'invalid': ssh_key_form.ssh_key_content.$invalid && ssh_key_form.ssh_key_content.$touched}"
+                ng-minlength="1"
+                required="true"
+                ng-required="true"
+              ></textarea>
+              <label for="ssh_key_content">Key</label>
             </div>
-            <div class="row">
-              <div class="col s12 m12 l10">
-                <!-- <input
-                  id="ssh_key_submit"
-                  type="submit"
-                  value="Save"
-                  class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
-                  ng-class="{'disabled': ssh_key_form.ssh_key_name.$invalid || ssh_key_form.ssh_key_content.$invalid,
-                             'blue': ssh_key_form.ssh_key_name.$valid && ssh_key_form.ssh_key_content.$valid}"
-                  ng-click="submitKey(ssh_key_form.ssh_key_name.$valid && ssh_key_form.ssh_key_content.$valid)"
-                  > -->
-                <input
-                  id="ssh_key_submit"
-                  type="submit"
-                  value="Save"
-                  class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
-                  ng-class="{'disabled': ssh_key_form.ssh_key_content.$invalid,
-                             'blue': ssh_key_form.ssh_key_content.$valid}"
-                  ng-click="submitKey(ssh_key_form.ssh_key_content.$valid)"
-                  >
-
-              </div>
+          </div>
+          <div class="row">
+            <div class="col s10 m6 l6 offset-m3 offset-l3">
+              <input
+                id="ssh_key_submit"
+                type="submit"
+                value="Save"
+                class="center-on-small-only right waves-effect waves-light btn disabled lighten-1 white-text"
+                ng-class="{'disabled': ssh_key_form.ssh_key_content.$invalid,
+                           'blue': ssh_key_form.ssh_key_content.$valid}"
+                ng-click="submitKey(ssh_key_form.ssh_key_content.$valid)"
+                >
             </div>
-            <div class="row">
-              <p id="ssh_key_submit_status" class="center-align"></p>
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     <div id="notifications" class="col s12 m12 l12">
       Notifications
