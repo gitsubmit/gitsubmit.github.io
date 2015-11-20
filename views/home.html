@@ -35,8 +35,14 @@
             <p ng-show="project.description && project.description !== ''">
               {{ project.description }}
             </p>
-            <p ng-show="project.due">
+            <p ng-show="project.due" ng-class="{
+              'red-text text-lighten-1': project.diff_days <= 0,
+            }">
               Due: {{ project.due }}
+              <span ng-show="project.diff_days < -1">({{ project.diff_days }} days past due)</span>
+              <span ng-show="project.diff_days === -1">(1 day past due)</span>
+              <span ng-show="project.diff_days === 0">(due today)</span>
+              <span ng-show="project.diff_days > 0">(due in {{ project.diff_days }} days)</span>
             </p>
             <p ng-show="project.is_team_based || project.is_team_based.toLowerCase() === 'true'">
               Team based, maximum {{ project.max_team_size }} members.
