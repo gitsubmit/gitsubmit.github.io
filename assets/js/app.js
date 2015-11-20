@@ -596,6 +596,7 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
     }).then(function(results) {
       $scope.submit_key_status = 'ready'
       $scope.key_button_text = 'Key added! Add another?'
+      $scope.ssh_key_content = ""
       $scope.getKeys()  // refresh the key list
       setTimeout(function() {
         $('#add_ssh_key').closeModal()
