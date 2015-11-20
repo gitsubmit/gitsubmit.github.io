@@ -1,24 +1,24 @@
 <div class="container">
   <div class="row">
+    <div class="spacer50"></div>
     <div class="col s12">
       <h2>Project <span ng-bind="project_name"></span></h2>
       <hr />
     </div>
-    <div class="col l6 m4 s12">
-      <p class="description"><span ng-bind="project_description"></span></p>
-      <p>This project is a part of the class: <b><a href="#/classes/{{parent}}"><span ng-bind="class_name"></span></a></b></p>
+    <p>Project description: {{project_description}}</span></p>
+    <p>This project is a part of the class: <a href="#/classes/{{parent}}">{{class_name}}</a></p>
+    <p>This project is due on: {{project.due}}</p>
+    <button ng-class="{'disabled': submission_status == 'submitting' }"
+            class="waves-effect waves-light btn lighten-1 white-text" ng-click="newSubmission()">
+      <i class="fa fa-code-fork material-icons left"></i>{{submission_button_text}}
+    </button>
+    <div ng-show="project.owner == current_user">
+    <p><b>Clone this project</b></p>
+    <p>
+      <pre class="clone-url-box-container"><span class="clone-url-box">git clone git@api.gitsubmit.com/{{gitolite_url}}</span></pre>
+    </p>
     </div>
-    <div class="col l6 m8 s12">
-      <button ng-class="{'disabled': submission_status == 'submitting' }"
-              class="waves-effect waves-light btn lighten-1 white-text" ng-click="newSubmission()">
-        <i class="fa fa-code-fork material-icons left"></i>{{submission_button_text}}
-      </button>
-      <p>
-        <h6>Clone this project (click to copy)</h6>
-        <pre class="clone-url-box-container"><span class="clone-url-box">git clone git@api.gitsubmit.com/{{gitolite_url}}</span></pre>
-      </p>
     </div>
-  </div>
   <div class="row">
     <div class="col s12">
       <h1><a href="#/classes/{{parent}}/projects/{{url_name}}/source/master/">View code</a></h1>
