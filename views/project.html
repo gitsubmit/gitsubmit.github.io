@@ -1,14 +1,14 @@
 <div class="container">
   <div class="section">
     <div class="spacer50"></div>
-      <h2>Project <span ng-bind="project_name"></span></h2>
+      <h2>Project {{ project.long_name }}</h2>
       <hr />
       <div class="spacer20"></div>
     <p>Project description: {{project_description}}</span></p>
     <p>This project is a part of the class: <a href="#/classes/{{parent}}">{{class_name}}</a></p>
     <p>This project is due on: {{project.due}}</p>
     <!-- project !== undefined condition because if this is not present, the ajax request takes some time and the button will show up briefly -->
-    <button ng-show="project !== undefined && project.owner !== current_user" ng-class="{'disabled': submission_status == 'submitting' }"
+    <button ng-show="project !== undefined && project.owner !== current_user && !submission_present && submission_present !== undefined" ng-class="{'disabled': submission_status == 'submitting' }"
             class="waves-effect waves-light btn blue lighten-1 white-text" ng-click="newSubmission()">
       <i class="fa fa-code-fork material-icons left"></i>{{submission_button_text}}
     </button>
