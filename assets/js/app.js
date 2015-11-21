@@ -466,9 +466,10 @@ app.controller('ProjectCtrl', function($scope, $rootScope, $http, $localStorage,
       Materialize.toast("SUB CREATED YES " + $scope.current_user || 'Error creating submission', 4000)
       $scope.submission_status = 'success'
       $scope.submission_button_text = "Create a new submission"
+      $location.path('/' + $scope.current_user + '/submissions/' + $scope.parent + '_' + $scope.project.url_name)
     }, function(results) {
       console.log(results.data)
-      Materialize.toast(results.data.error, 4000)
+      Materialize.toast(results.data ? results.data.error : 'Error creating a new submission', 4000)
       $scope.submission_status = 'error'
       $scope.submission_button_text = "Create a new submission"
     })
