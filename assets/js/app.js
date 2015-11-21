@@ -739,8 +739,8 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location,
     }
   }, function(results) {
     // failure
-    $scope.file_browser_status = 'ready'
-    Materialize.toast(results.data ? results.data.error : 'Error loading file browser', 4000)
+    $scope.file_browser_status = 'failure'
+    // Materialize.toast(results.data ? results.data.error : 'Error loading file browser', 4000)
   })
 })
 
