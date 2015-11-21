@@ -39,7 +39,7 @@
               'red-text text-lighten-1': project.diff_days <= 0,
             }">
               Due: {{ project.due }}
-              <span ng-show="project.diff_days < -1">({{ project.diff_days }} days past due)</span>
+              <span ng-show="project.diff_days < -1">({{ -project.diff_days }} days past due)</span>
               <span ng-show="project.diff_days === -1">(1 day past due)</span>
               <span ng-show="project.diff_days === 0">(due today)</span>
               <span ng-show="project.diff_days > 0">(due in {{ project.diff_days }} days)</span>
