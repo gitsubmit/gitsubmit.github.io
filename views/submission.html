@@ -24,7 +24,7 @@
     <p>Class: <a href="{{ '/#/classes/' + class_id }}">{{ class.long_name }}</a></p>
     <p>Project: <a href="{{ '/#/classes/' + class_id + '/projects/' + project_id }}">{{ project.long_name }}</a></p>
     <p>Project Description: {{ project.description }}</p>
-    <p>Project Due Date: {{ project.due }}</p>
+    <p>Project Due Date: <span ng-include="'views/due_date.html'"></span></p>
   </div>
 
   <div ng-show="submission.contributors.indexOf(current_user) != -1">
@@ -32,8 +32,9 @@
     <p>
       <pre class="clone-url-box-container"><span class="clone-url-box">git clone git@api.gitsubmit.com:/{{submission.gitolite_url}}</span></pre>
     </p>
-    <hr/>
+    <div class="spacer20"></div>
     <h4>Repo Browser</h4>
+    <hr/>
     <div ng-include="'views/file_browser.html'"></div>
     <hr/>
     <!-- TODO: move this button to another place that makes more sense--><a class="btn waves-effect waves-light red lighten-1 white-text">delete this submission</a>
