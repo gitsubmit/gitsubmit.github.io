@@ -128,6 +128,7 @@ app.run(function($rootScope, $location, $http, $localStorage, Consts, cachedGet)
   // show menu items according to whether user is logged in or not
   var token = $localStorage.token
   $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
+  $rootScope.current_user = $localStorage.username
 
   // index.html JavaScript setup code
   $(document).ready(function() {
