@@ -1,0 +1,9 @@
+<span ng-controller="DueDateCtrl" ng-class="{
+  'red-text text-lighten-1': diff_days <= 0
+}">
+  {{ due_date_str }}
+  <span ng-show="diff_days < -1">({{ -diff_days }} days past due)</span>
+  <span ng-show="diff_days === -1">(1 day past due)</span>
+  <span ng-show="diff_days === 0">(due today)</span>
+  <span ng-show="diff_days > 0">(due in {{ diff_days }} days)</span>
+</span>
