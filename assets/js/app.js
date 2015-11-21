@@ -451,6 +451,16 @@ app.controller('ProjectCtrl', function($scope, $rootScope, $http, $localStorage,
     Materialize.toast(res.data ? res.data.error : 'Error getting class', 4000)
   })
 
+  // check if user already created a submission. if yes, hide the 'new submission' button
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/' + $scope.current_user + '/submissions/' + class_name + '_' + project_name + '/'
+  }).then(function(res) {
+    $scope.submission_present = true
+  }, function(res) {
+    $scope.submission_present = false
+  })
+
   $scope.newSubmission = function() {
     // Materialize.toast("new sub for " + $scope.current_user + ": "+Consts.API_SERVER + '/classes/' + $scope.parent + '/projects/' + $scope.project.url_name + "/make_submission/" || 'Error creating submission', 4000)
 
