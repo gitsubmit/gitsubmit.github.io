@@ -25,7 +25,7 @@
         <li class="collection-header collection-header-accent"><h3>Projects</h3></li>
         <li ng-repeat="project in projects" class="collection-item">
           <a href="#/classes/{{project.parent}}/projects/{{project.url_name}}">{{project.long_name}}</a>
-          <br>{{project.due}}
+          <br><span ng-include="'views/due_date.html'"></span>
         </li>
         <li class="collection-item" ng-show="!projects.length"><i>No projects!</i></li>
       </ul>
@@ -33,7 +33,7 @@
         <li class="collection-header collection-header-accent"><h3>Projects (overdue)</h3></li>
         <li ng-repeat="project in overdue_projects" class="collection-item">
           <a href="#/classes/{{project.parent}}/projects/{{project.url_name}}">{{project.long_name}}</a>
-          <br>{{project.due}}
+          <br><span ng-include="'views/due_date.html'"></span>
         </li>
         <li class="collection-item" ng-show="!overdue_projects.length"><i>No overdue projects!</i></li>
         <li class="collection-item" ng-show="class.owner == current_user">
