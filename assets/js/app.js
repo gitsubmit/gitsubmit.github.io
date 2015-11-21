@@ -811,6 +811,7 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, 
       url: Consts.API_SERVER + '/classes/' + class_id + '/projects/' + project_id + '/'
     }).then(function(res) {
       $scope.project = res.data.project
+      $scope.gitolite_url = res.data.project.gitolite_url // export to git_clone.html include
       $scope.status_project = 'ready'
     }, error)
   }, error)
@@ -875,4 +876,17 @@ app.controller('DueDateCtrl', function($scope) {
 
   $scope.$watch('project', apply)
   $scope.$watch('due_date', apply)
+})
+
+app.controller('GitCloneCtrl', function($scope) {
+  // NOTE: this controller relies on the exported $scope.gitolite_url property
+  var apply = function() {
+    $scope.cmd = 'git clone git@api.gitsubmit.com:/' + $scope.gitolite_url
+
+    $scope.copy = function() {
+      window.prompt("Press Ctrl/Cmd + C, Enter", $scope.cmd);
+    }
+  }
+
+  $scope.$watch('gitolite_url', apply)
 })

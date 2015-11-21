@@ -13,9 +13,8 @@
       <i class="fa fa-code-fork material-icons left"></i>{{submission_button_text}}
     </button>
     <div ng-show="project.owner == current_user">
-    <p><b>Clone this project</b></p>
-    <p>
-      <pre class="clone-url-box-container"><span class="clone-url-box">git clone git@api.gitsubmit.com:/{{gitolite_url}}</span></pre>
+    <p><b>Clone this project</b> (Click to copy)</p>
+    <p ng-include="'views/git_clone.html'">
     </p>
     </div>
   </div>
