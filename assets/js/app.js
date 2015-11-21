@@ -849,25 +849,30 @@ app.controller('SubmissionFileBrowserCtrl', function($scope, $rootScope, $http, 
 
 app.controller('DueDateCtrl', function($scope) {
   // NOTE: this controller relies on the exported $scope.due_date or $scope.project property
-  var due_date_str
-  if ($scope.project) {
-    due_date_str = $scope.project.due
-  } else if ($scope.due_date) {
-    due_date_str = $scope.due_date
-  } else {
-    console.log('missing $scope.project or $scope.due_date')
+  var apply = function() {
+    var due_date_str
+    if ($scope.project) {
+      due_date_str = $scope.project.due
+    } else if ($scope.due_date) {
+      due_date_str = $scope.due_date
+    } else {
+      return
+    }
+
+    $scope.due_date_str = due_date_str
+
+    var due_date_str_fields = due_date_str.split('-'),
+      due_date = new Date(),
+      today_date = new Date()
+
+    due_date.setFullYear(due_date_str_fields[0])
+    due_date.setMonth(parseInt(due_date_str_fields[1]) - 1)
+    due_date.setDate(due_date_str_fields[2])
+
+    var diff_days = parseInt((due_date.getTime() - today_date.getTime()) / (1000 * 60 * 60 * 24))
+    $scope.diff_days = diff_days <= 7 ? diff_days : undefined // don't show if the due date is more than 7 days away
   }
 
-  $scope.due_date_str = due_date_str
-
-  var due_date_str_fields = due_date_str.split('-'),
-    due_date = new Date(),
-    today_date = new Date()
-
-  due_date.setFullYear(due_date_str_fields[0])
-  due_date.setMonth(parseInt(due_date_str_fields[1]) - 1)
-  due_date.setDate(due_date_str_fields[2])
-
-  var diff_days = parseInt((due_date.getTime() - today_date.getTime()) / (1000 * 60 * 60 * 24))
-  $scope.diff_days = diff_days <= 7 ? diff_days : undefined // don't show if the due date is more than 7 days away
+  $scope.$watch('project', apply)
+  $scope.$watch('due_date', apply)
 })
