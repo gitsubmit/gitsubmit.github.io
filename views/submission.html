@@ -28,9 +28,8 @@
   </div>
 
   <div ng-show="submission.contributors.indexOf(current_user) != -1">
-    <p><b>Clone this submission</b></p>
-    <p>
-      <pre class="clone-url-box-container"><span class="clone-url-box">git clone git@api.gitsubmit.com:/{{submission.gitolite_url}}</span></pre>
+    <p><b>Clone this submission</b> (Click to copy)</p>
+    <p ng-include="'views/git_clone.html'">
     </p>
     <div class="spacer20"></div>
     <h4>Repo Browser</h4>
