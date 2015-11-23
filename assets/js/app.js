@@ -128,6 +128,7 @@ app.run(function($rootScope, $location, $http, $localStorage, Consts, cachedGet)
   // show menu items according to whether user is logged in or not
   var token = $localStorage.token
   $rootScope.isLoggedIn = (token !== undefined && token !== null && token !== '')
+  $rootScope.current_user = $localStorage.username
 
   // index.html JavaScript setup code
   $(document).ready(function() {
@@ -176,7 +177,6 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage, $http, Co
   if($rootScope.isLoggedIn) {
     $rootScope.current_user = $localStorage.username
   }
-  var today_date = new Date()
 
   $http({
     method: 'GET',
@@ -192,19 +192,6 @@ app.controller('HomeCtrl', function($scope, $rootScope, $localStorage, $http, Co
       }
       return 0
     })
-    for (var i = 0; i < projects.length; i++) {
-      var due = projects[i].due
-      var due_fields = due.split('-')
-      var due_date = new Date()
-      due_date.setFullYear(due_fields[0])
-      due_date.setMonth(parseInt(due_fields[1]) - 1)
-      due_date.setDate(due_fields[2])
-
-      var diff_days = parseInt((due_date.getTime() - today_date.getTime()) / (1000 * 60 * 60 * 24))
-      if (diff_days <= 7) {   // don't show if the due date is more than 7 days away
-        projects[i].diff_days = diff_days
-      }
-    }
 
     $scope.classes = res.data.classes
     $scope.projects = projects
@@ -293,7 +280,7 @@ app.controller('ClassListCtrl', function($scope, $rootScope, $http, Consts) {
     $scope.classes = res.data.classes
   }, function(res) {
     $scope.class_list_status = 'ready'
-    Materialize.toast(res.data.error || 'Error getting the list of classes', 4000)
+    Materialize.toast(res.data ? res.data.error : 'Error getting the list of classes', 4000)
   })
 })
 
@@ -339,7 +326,7 @@ app.controller('ClassCtrl', function($scope, $rootScope, $http, $localStorage, $
   }
 
   $scope.enrollStudent = function() {
-     Materialize.toast('enroll student ' + $scope.current_user)
+     // Materialize.toast('enroll student ' + $scope.current_user)
     $http({
       method: 'POST',
       url: Consts.API_SERVER + '/classes/' + $scope.class.url_name + '/student/',
@@ -350,7 +337,7 @@ app.controller('ClassCtrl', function($scope, $rootScope, $http, $localStorage, $
       $scope.class.students.push($scope.current_user)
     }, function(results) {
       console.log(results.data)
-      Materialize.toast(results.data.error, 4000)
+      Materialize.toast(results.data ? results.data.error : 'Error enrolling student', 4000)
     })
     // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
   }
@@ -367,7 +354,7 @@ app.controller('ClassCtrl', function($scope, $rootScope, $http, $localStorage, $
       $scope.teacher = ''
     }, function(results) {
       console.log(results.data)
-      Materialize.toast(results.data.error, 4000)
+      Materialize.toast(results.data ? results.data.error : 'Error adding teacher', 4000)
     })
     // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
   }
@@ -431,7 +418,7 @@ app.controller('ProjectCtrl', function($scope, $rootScope, $http, $localStorage,
     $scope.url_name = res.data.project.url_name
     $scope.gitolite_url = res.data.project.gitolite_url
   }, function(res) {
-    Materialize.toast(res.data.error || 'Error getting project', 4000)
+    Materialize.toast(res.data ? res.data.error : 'Error getting project details', 4000)
   })
 
 
@@ -447,11 +434,21 @@ app.controller('ProjectCtrl', function($scope, $rootScope, $http, $localStorage,
     //$scope.classes = res.data.classes
   }, function(res) {
     //$scope.class_list_status = 'ready'
-    Materialize.toast(res.data.error || 'Error getting class', 4000)
+    Materialize.toast(res.data ? res.data.error : 'Error getting class', 4000)
+  })
+
+  // check if user already created a submission. if yes, hide the 'new submission' button
+  $http({
+    method: 'GET',
+    url: Consts.API_SERVER + '/' + $scope.current_user + '/submissions/' + class_name + '_' + project_name + '/'
+  }).then(function(res) {
+    $scope.submission_present = true
+  }, function(res) {
+    $scope.submission_present = false
   })
 
   $scope.newSubmission = function() {
-    Materialize.toast("new sub for " + $scope.current_user + ": "+Consts.API_SERVER + '/classes/' + $scope.parent + '/projects/' + $scope.project.url_name + "/make_submission/" || 'Error creating submission', 4000)
+    // Materialize.toast("new sub for " + $scope.current_user + ": "+Consts.API_SERVER + '/classes/' + $scope.parent + '/projects/' + $scope.project.url_name + "/make_submission/" || 'Error creating submission', 4000)
 
     $scope.submission_status = 'submitting'
     $scope.submission_button_text = "Creating a new submission..."
@@ -463,12 +460,13 @@ app.controller('ProjectCtrl', function($scope, $rootScope, $http, $localStorage,
         owner: $scope.current_user
       }
     }).then(function(results) {
-      Materialize.toast("SUB CREATED YES " + $scope.current_user || 'Error creating submission', 4000)
+      // Materialize.toast("SUB CREATED YES " + $scope.current_user || 'Error creating submission', 4000)
       $scope.submission_status = 'success'
       $scope.submission_button_text = "Create a new submission"
+      $location.path('/' + $scope.current_user + '/submissions/' + $scope.parent + '_' + $scope.project.url_name)
     }, function(results) {
       console.log(results.data)
-      Materialize.toast(results.data.error, 4000)
+      Materialize.toast(results.data ? results.data.error : 'Error creating a new submission', 4000)
       $scope.submission_status = 'error'
       $scope.submission_button_text = "Create a new submission"
     })
@@ -600,7 +598,7 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
       $scope.keys.splice(index, 1)
     }, function(results) {
       console.log(results.data)
-      Materialize.toast(results.data.error, 4000)
+      Materialize.toast(results.data ? results.data.error : 'Failed to delete', 4000)
     })
     // TODO: DELETE api:/<username>/ssh_keys/<sshkey_hexstring>/
   }
@@ -636,7 +634,7 @@ app.controller('SettingsCtrl', function($scope, $rootScope, $http, $localStorage
     }, function(results) {
       $scope.key_button_text = 'Could not add key. Try again?'
       $scope.submit_key_status = 'error'
-      Materialize.toast(results.data.error, 4000)
+      Materialize.toast(results.data ? results.data.error : 'Error adding key', 4000)
     })
   }
 
@@ -739,8 +737,8 @@ app.controller('FileBrowserCtrl', function($scope, $rootScope, $http, $location,
     }
   }, function(results) {
     // failure
-    $scope.file_browser_status = 'ready'
-    Materialize.toast(results.data ? results.data.error : 'Error loading file browser', 4000)
+    $scope.file_browser_status = 'failure'
+    // Materialize.toast(results.data ? results.data.error : 'Error loading file browser', 4000)
   })
 })
 
@@ -812,7 +810,9 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, 
       method: 'GET',
       url: Consts.API_SERVER + '/classes/' + class_id + '/projects/' + project_id + '/'
     }).then(function(res) {
+      console.log($scope.submission)
       $scope.project = res.data.project
+      $scope.gitolite_url = $scope.submission.gitolite_url // export to git_clone.html include
       $scope.status_project = 'ready'
     }, error)
   }, error)
@@ -849,3 +849,45 @@ app.controller('SubmissionFileBrowserCtrl', function($scope, $rootScope, $http, 
   }
 })
 
+app.controller('DueDateCtrl', function($scope) {
+  // NOTE: this controller relies on the exported $scope.due_date or $scope.project property
+  var apply = function() {
+    var due_date_str
+    if ($scope.project) {
+      due_date_str = $scope.project.due
+    } else if ($scope.due_date) {
+      due_date_str = $scope.due_date
+    } else {
+      return
+    }
+
+    $scope.due_date_str = due_date_str
+
+    var due_date_str_fields = due_date_str.split('-'),
+      due_date = new Date(),
+      today_date = new Date()
+
+    due_date.setFullYear(due_date_str_fields[0])
+    due_date.setMonth(parseInt(due_date_str_fields[1]) - 1)
+    due_date.setDate(due_date_str_fields[2])
+
+    var diff_days = parseInt((due_date.getTime() - today_date.getTime()) / (1000 * 60 * 60 * 24))
+    $scope.diff_days = diff_days <= 7 ? diff_days : undefined // don't show if the due date is more than 7 days away
+  }
+
+  $scope.$watch('project', apply)
+  $scope.$watch('due_date', apply)
+})
+
+app.controller('GitCloneCtrl', function($scope) {
+  // NOTE: this controller relies on the exported $scope.gitolite_url property
+  var apply = function() {
+    $scope.cmd = 'git clone git@api.gitsubmit.com:/' + $scope.gitolite_url
+
+    $scope.copy = function() {
+      window.prompt("Press Ctrl/Cmd + C, Enter", $scope.cmd);
+    }
+  }
+
+  $scope.$watch('gitolite_url', apply)
+})

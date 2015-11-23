@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+LASTTESTSERVERPID=$(cat frontend_staging_pid) || true
+kill $LASTTESTSERVERPID
+
 set -e # exit with non-zero exit codes immediately
 if [ "$local_instance" = "yes" ]; then
     # this is on a server
@@ -8,7 +11,10 @@ else
     . /virtualenvs/gitsubmit_env/bin/activate
 fi
 
-git clone https://github.com/gitsubmit/gitsubmit-backend.git
+cd gitsubmit-backend
+git checkout master
+git pull
+cd ..
 pip install -r gitsubmit-backend/requirements.txt
 
 cd gitsubmit-backend
@@ -24,5 +30,3 @@ cd ../../test
 # Run tests with an X virtual frame buffer
 xvfb-run --server-args="-screen 0, 1920x1080x24" python -m robot.run --noncritical not_implemented .
 kill $TESTSERVERPID
-
-rm -rf gitsubmit-backend

@@ -1,24 +1,25 @@
 <div class="container">
   <div class="section">
     <div class="spacer50"></div>
-      <h2>Project <span ng-bind="project_name"></span></h2>
+      <h2>Project {{ project.long_name }}</h2>
       <hr />
       <div class="spacer20"></div>
     <p>Project description: {{project_description}}</span></p>
     <p>This project is a part of the class: <a href="#/classes/{{parent}}">{{class_name}}</a></p>
-    <p>This project is due on: {{project.due}}</p>
-    <button ng-class="{'disabled': submission_status == 'submitting' }"
+    <p>This project is due on: <span ng-include="'views/due_date.html'"></span></p>
+    <!-- project !== undefined condition because if this is not present, the ajax request takes some time and the button will show up briefly -->
+    <button ng-show="project !== undefined && project.owner !== current_user && !submission_present && submission_present !== undefined" ng-class="{'disabled': submission_status == 'submitting' }"
             class="waves-effect waves-light btn blue lighten-1 white-text" ng-click="newSubmission()">
       <i class="fa fa-code-fork material-icons left"></i>{{submission_button_text}}
     </button>
     <div ng-show="project.owner == current_user">
-      <p><b>Clone this project</b></p>
-      <p>
-        <pre class="clone-url-box-container"><span class="clone-url-box">git clone git@api.gitsubmit.com/{{gitolite_url}}</span></pre>
-      </p>
+    <p><b>Clone this project</b> (Click to copy)</p>
+    <p ng-include="'views/git_clone.html'">
+    </p>
     </div>
   </div>
   <div class="section">
+    <h4>Repo Browser</h4>
     <hr>
     <div ng-include="'views/file_browser.html'"></div>
     <hr>
