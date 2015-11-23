@@ -811,7 +811,7 @@ app.controller('ViewSubmissionCtrl', function($scope, $rootScope, $routeParams, 
       url: Consts.API_SERVER + '/classes/' + class_id + '/projects/' + project_id + '/'
     }).then(function(res) {
       $scope.project = res.data.project
-      $scope.gitolite_url = res.data.project.gitolite_url // export to git_clone.html include
+      $scope.gitolite_url = $scope.submission.gitolite_url // export to git_clone.html include
       $scope.status_project = 'ready'
     }, error)
   }, error)
