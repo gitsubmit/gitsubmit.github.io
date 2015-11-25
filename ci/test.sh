@@ -81,7 +81,7 @@ git push
 cd $TEST_PATH/gitsubmit-backend
 cd src
 # shove some data in there
-python ../ci/fill_db_with_fake_data.py -p 27217 -pyo $GL_PATH
+python ../ci/fill_db_with_fake_data.py -p 27217 -pyo $GL_PATH -s test_gitsubmit_repo_front
 
 # start a testing server on port 5555
 nohup /virtualenvs/gitsubmit_env/bin/gunicorn --access-logfile /srv/logs/staging_access.log -w 1 -b :5559 "app:configured_main('$GL_PATH', '$REPO_PATH', 27217)" &
