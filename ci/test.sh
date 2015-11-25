@@ -52,7 +52,7 @@ echo "==============================================================="
 echo "ll"
 ls -la
 echo "docker cp gitolite.rc gitotestname:/home/git/.gitolite.rc"
-docker cp gitsubmit-backend/ci/gitolite.rc gitotestname_front:/home/git/.gitolite.rc
+docker cp ci/gitolite.rc gitotestname_front:/home/git/.gitolite.rc
 echo "==============================================================="
 
 # Get a copy of the faked gitolite repo
