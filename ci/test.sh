@@ -14,6 +14,8 @@ rmdir temp/repositories
 TESTSERVERPID=$(cat frontend_staging_pid) || true
 kill $TESTSERVERPID
 
+FRONTPID=$(cat front_serv_staging_pid) || true
+kill FRONTPID || true
 
 rm bogus_key_*
 rm **/bogus_key_*
@@ -94,6 +96,8 @@ cd $TEST_PATH
 
 echo "API_SERVER=\"http://localhost:5559\"" > assets/js/config.js
 python -m SimpleHTTPServer 5558 &
+FRONTSERVPID=$!
+echo FRONTSERVPID > $TEST_PATH/front_serv_staging_pid
 
 cd test
 # Run tests with an X virtual frame buffer
