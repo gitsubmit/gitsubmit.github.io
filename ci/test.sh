@@ -87,13 +87,13 @@ python ../ci/fill_db_with_fake_data.py -p 27217 -pyo $GL_PATH
 nohup /virtualenvs/gitsubmit_env/bin/gunicorn --access-logfile /srv/logs/staging_access.log -w 1 -b :5559 "app:configured_main('$GL_PATH', '$REPO_PATH', 27217)" &
 
 NEWTESTSERVERPID=$!
-echo $NEWTESTSERVERPID > $TEST_PATH/staging_pid
+echo $NEWTESTSERVERPID > $TEST_PATH/frontend_staging_pid
 sleep 3 # let gunicorn warm up
 
 cd $TEST_PATH
 
 echo "API_SERVER=\"http://localhost:5559\"" > assets/js/config.js
-python -m SimpleHTTPServer 5558
+python -m SimpleHTTPServer 5558 &
 
 cd test
 # Run tests with an X virtual frame buffer
