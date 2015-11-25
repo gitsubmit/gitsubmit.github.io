@@ -250,6 +250,10 @@ app.controller('LoginCtrl', function($scope, $rootScope, $http, $localStorage, $
       Materialize.toast(results.data ? results.data.error : 'Error logging in', 4000)
     })
   }
+
+  $(document).ready(function() {
+    $('#sidenav-overlay').trigger('click');
+  })
 })
 
 app.controller('SignupCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
