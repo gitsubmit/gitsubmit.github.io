@@ -51,7 +51,7 @@ sleep 10 # let docker warm up
 echo "==============================================================="
 echo "ll"
 ls -la
-echo "docker cp gitolite.rc gitotestname:/home/git/.gitolite.rc"
+echo "docker cp ci/gitolite.rc gitotestname:/home/git/.gitolite.rc"
 docker cp ci/gitolite.rc gitotestname_front:/home/git/.gitolite.rc
 echo "==============================================================="
 
