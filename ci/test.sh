@@ -14,6 +14,7 @@ rmdir temp/repositories
 TESTSERVERPID=$(cat frontend_staging_pid) || true
 kill $TESTSERVERPID
 
+
 rm bogus_key_*
 rm **/bogus_key_*
 
